@@ -1,0 +1,1341 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema de Balizamento de Natação</title>
+
+    <!-- CSS MODULARIZADO -->
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/modal-functionality.css" />
+  </head>
+  <body>
+    <!-- SIDEBAR - MENU FIXO -->
+    <aside id="sidebar" class="sidebar-menu">
+      <div class="sidebar-header">
+        <h2>🏊 Menu</h2>
+      </div>
+
+      <!-- CADASTROS -->
+      <nav class="menu-section">
+        <h3 class="menu-section-title" data-section="cadastros">
+          <span class="menu-toggle">▶</span> 📋 Cadastros
+        </h3>
+        <div id="cadastros-menu" class="menu-items collapsed">
+          <a href="#/cadastro-clube" class="menu-link">Cadastrar Clube</a>
+          <a href="#/cadastro-categoria" class="menu-link"
+            >Cadastrar Categoria</a
+          >
+          <a href="#/cadastro-atleta" class="menu-link">Cadastrar Atleta</a>
+          <a href="#/cadastro-prova" class="menu-link">Cadastrar Prova</a>
+        </div>
+      </nav>
+
+      <!-- CONFIGURAÇÃO -->
+      <nav class="menu-section">
+        <h3 class="menu-section-title" data-section="configuracao">
+          <span class="menu-toggle">▶</span> ⚙️ Configuração
+        </h3>
+        <div id="configuracao-menu" class="menu-items collapsed">
+          <a href="#/cadastro-evento" class="menu-link">Criar Evento</a>
+          <a href="#/gerenciar-provas-evento" class="menu-link"
+            >Provas do Evento</a
+          >
+          <a href="#/inscricao" class="menu-link">Inscrições</a>
+        </div>
+      </nav>
+
+      <!-- OPERAÇÕES -->
+      <nav class="menu-section">
+        <h3 class="menu-section-title" data-section="operacoes">
+          <span class="menu-toggle">▶</span> ⚡ Operações
+        </h3>
+        <div id="operacoes-menu" class="menu-items collapsed">
+          <a href="#/balizamento" class="menu-link">Ver Balizamento</a>
+          <a href="#/resultados" class="menu-link">Lançar Resultados</a>
+        </div>
+      </nav>
+
+      <!-- RESULTADOS -->
+      <nav class="menu-section">
+        <h3 class="menu-section-title" data-section="resultados">
+          <span class="menu-toggle">▶</span> 🏆 Resultados
+        </h3>
+        <div id="resultados-menu" class="menu-items collapsed">
+          <a href="#/resultado-final" class="menu-link">Resultado Final</a>
+        </div>
+      </nav>
+
+      <!-- ADMINISTRAÇÃO -->
+      <nav class="menu-section" style="display: none">
+        <h3 class="menu-section-title" data-section="administracao">
+          <span class="menu-toggle">▶</span> 🛠️ Administração
+        </h3>
+        <div id="administracao-menu" class="menu-items collapsed">
+          <a href="#/utilidades" class="menu-link">Utilidades</a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- ===== MODAIS GLOBAIS (SEMPRE DISPONÍVEIS) ===== -->
+
+    <!-- MODAL MELHORES TEMPOS -->
+    <div id="modal-melhoresTempos" class="modal-overlay" style="display: none">
+      <div class="modal-content" style="width: 700px">
+        <div class="modal-header">
+          <h3 id="modal-tempos-titulo">Melhores Tempos</h3>
+          <span class="modal-close" onclick="fecharModalTempos()">×</span>
+        </div>
+        <div class="modal-body">
+          <div id="tempos-container" style="margin-bottom: 1rem"></div>
+
+          <hr style="margin: 1rem 0" />
+
+          <h4 style="color: #005f73; margin-bottom: 1rem">Editar Tempo</h4>
+          <form id="form-tempo-modal">
+            <input type="hidden" id="tempo-atleta-id" value="" />
+
+            <div class="form-group-modal">
+              <label for="tempo-prova-select">Prova:</label>
+              <select id="tempo-prova-select" class="form-control" required>
+                <option value="">-- Selecione uma prova --</option>
+              </select>
+            </div>
+
+            <div class="form-group-modal">
+              <label for="tempo-value">Tempo (MM:SS.CC):</label>
+              <input
+                type="text"
+                id="tempo-value"
+                class="form-control"
+                placeholder="01:30.45"
+                pattern="\d{1,2}:\d{2}\.\d{2}"
+                required
+              />
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">
+                Salvar Tempo
+              </button>
+              <button
+                type="button"
+                class="btn btn-cancelar-modal"
+                onclick="fecharModalTempos()"
+              >
+                Fechar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL INSCRIÇÃO EM EVENTO -->
+    <div
+      id="modal-inscricao-evento"
+      class="modal-overlay"
+      style="display: none"
+    >
+      <div class="modal-content" style="width: 600px">
+        <div class="modal-header">
+          <h3 id="modal-inscricao-titulo">Inscrever em Evento</h3>
+          <span class="modal-close" onclick="fecharModalInscricao()">×</span>
+        </div>
+        <div class="modal-body">
+          <form id="form-inscricao-modal">
+            <input type="hidden" id="inscricao-atleta-id" value="" />
+            <input type="hidden" id="inscricao-evento-id" value="" />
+
+            <div class="form-group-modal">
+              <label for="inscricao-evento-select">Evento:</label>
+              <select
+                id="inscricao-evento-select"
+                class="form-control"
+                required
+              >
+                <option value="">-- Selecione um evento --</option>
+              </select>
+            </div>
+
+            <div class="form-group-modal">
+              <label
+                style="
+                  display: block;
+                  margin-bottom: 0.5rem;
+                  font-weight: bold;
+                  color: #001219;
+                "
+                >Provas Disponíveis:</label
+              >
+              <div
+                id="inscricao-provas-list"
+                style="
+                  border: 1px solid #ddd;
+                  border-radius: 4px;
+                  padding: 0.8rem;
+                  max-height: 300px;
+                  overflow-y: auto;
+                "
+              >
+                <p style="color: #999; font-size: 0.95rem">
+                  Selecione um evento acima
+                </p>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">
+                Confirmar Inscrição
+              </button>
+              <button
+                type="button"
+                class="btn btn-cancelar-modal"
+                onclick="fecharModalInscricao()"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL ADICIONAR ATLETA NO BALIZAMENTO -->
+    <div
+      id="modal-adicionar-balizamento"
+      class="modal-overlay"
+      style="display: none"
+    >
+      <div class="modal-content" style="width: 600px">
+        <div class="modal-header">
+          <h3 id="modal-balizamento-titulo">Atletas da Prova</h3>
+          <span class="modal-close" onclick="fecharModalAdiconarBalizamento()"
+            >×</span
+          >
+        </div>
+        <div class="modal-body">
+          <div id="modal-balizamento-content"></div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-cancelar-modal"
+              onclick="fecharModalAdiconarBalizamento()"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL EDITAR RAIA E SÉRIE -->
+    <div
+      id="modal-editar-raia-serie"
+      class="modal-overlay"
+      style="display: none"
+    >
+      <div
+        class="modal-content"
+        style="width: 700px; max-height: 70vh; overflow-y: auto"
+      >
+        <div class="modal-header">
+          <h3>Editar Série e Raia</h3>
+          <span
+            class="modal-close"
+            onclick="
+              document.getElementById('modal-editar-raia-serie').style.display =
+                'none'
+            "
+            >×</span
+          >
+        </div>
+        <div class="modal-body">
+          <div id="modal-editar-raia-serie-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="main-layout">
+      <!-- HEADER -->
+      <header id="page-header" class="page-header">
+        <h1 id="page-title">Sistema de Balizamento de Natação</h1>
+      </header>
+
+      <!-- ÁREA DE CONTEÚDO (SPA) -->
+      <section id="app-content" class="app-content">
+        <div class="loading">Carregando...</div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer id="page-footer" class="page-footer">
+        <p>
+          &copy; 2026 Sistema de Balizamento de Natação. Todos os direitos
+          reservados.
+        </p>
+      </footer>
+    </main>
+
+    <!-- ===== TEMPLATES INLINE (HTML PURO - SEM SERVIDOR) ===== -->
+
+    <!-- HOME -->
+    <template id="home">
+      <section class="container">
+        <div class="section">
+          <h2 class="section-title">🏊 Sistema de Balizamento de Natação</h2>
+          <p
+            style="
+              text-align: center;
+              color: #666;
+              font-size: 1.1rem;
+              margin-bottom: 2rem;
+            "
+          >
+            Gerenciamento completo de eventos de natação
+          </p>
+
+          <div class="grid grid-4">
+            <div class="card">
+              <div class="card-header">📋 Cadastros</div>
+              <div class="card-body">
+                <p>Gerencie clubes, atletas, categorias e provas</p>
+                <a
+                  href="#/cadastro-clube"
+                  class="btn btn-primary"
+                  style="display: block; margin-top: 1rem"
+                  >Ir para Cadastros</a
+                >
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">⚙️ Configuração</div>
+              <div class="card-body">
+                <p>Configure eventos, provas e inscrições</p>
+                <a
+                  href="#/cadastro-evento"
+                  class="btn btn-primary"
+                  style="display: block; margin-top: 1rem"
+                  >Ir para Configuração</a
+                >
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">⚡ Operações</div>
+              <div class="card-body">
+                <p>Veja balizamento e lance resultados</p>
+                <a
+                  href="#/balizamento"
+                  class="btn btn-primary"
+                  style="display: block; margin-top: 1rem"
+                  >Ir para Operações</a
+                >
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">🏆 Resultados</div>
+              <div class="card-body">
+                <p>Visualize e exporte resultados finais</p>
+                <a
+                  href="#/resultado-final"
+                  class="btn btn-primary"
+                  style="display: block; margin-top: 1rem"
+                  >Ir para Resultados</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- RESULTADO FINAL -->
+    <template id="resultado-final">
+      <section class="container">
+        <div class="section">
+          <div class="card mb-3">
+            <div class="card-header">Resultado Final</div>
+            <div class="card-body">
+              <div class="flex" style="gap: 1.5rem">
+                <div class="form-group" style="flex: 1">
+                  <label class="form-label">Selecione o Evento:</label>
+                  <select id="evento-filter" class="form-control">
+                    <option value="">-- Selecione um evento --</option>
+                  </select>
+                </div>
+
+                <div style="display: flex; flex-direction: column">
+                  <label class="form-label">⏳ Pendente Impressão</label>
+                  <div class="switch-container" style="margin: 0.4rem">
+                    <input
+                      type="checkbox"
+                      id="pendente-impressao"
+                      class="switch-input"
+                      checked
+                    />
+                    <label
+                      for="pendente-impressao"
+                      class="switch-label"
+                    ></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensagens -->
+          <div id="mensagem-container"></div>
+
+          <!-- Resultados -->
+          <div id="resultados-container">
+            <p class="text-light text-center">
+              Selecione um evento para visualizar as provas.
+            </p>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- RESULTADOS (LANÇAR) -->
+    <template id="resultados">
+      <section class="container">
+        <div class="section">
+          <!-- Filtros -->
+          <div class="card mb-3">
+            <div class="card-header">Lançar Resultados</div>
+            <div class="card-body">
+              <div class="flex" style="gap: 1.5rem">
+                <div class="form-group" style="flex: 1">
+                  <label class="form-label">Selecione o Evento:</label>
+                  <select id="evento-filter" class="form-control">
+                    <option value="">-- Selecione um evento --</option>
+                  </select>
+                </div>
+
+                <div style="display: flex; flex-direction: column">
+                  <label class="form-label">✓ Apenas Pendentes</label>
+                  <div class="switch-container" style="margin: 0.4rem">
+                    <input
+                      type="checkbox"
+                      id="apenas-pendentes"
+                      class="switch-input"
+                      checked
+                    />
+                    <label for="apenas-pendentes" class="switch-label"></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensagens -->
+          <div id="mensagem-container"></div>
+
+          <!-- Resultados -->
+          <div id="resultados-container">
+            <p class="text-light text-center">
+              Selecione um evento para visualizar as provas.
+            </p>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- BALIZAMENTO -->
+    <template id="balizamento">
+      <section class="container">
+        <div class="section">
+          <div class="card mb-3">
+            <div class="card-header">Balizamento</div>
+            <div class="card-body">
+              <div class="flex" style="gap: 1.5rem">
+                <div class="form-group" style="flex: 1">
+                  <label class="form-label">Selecione o Evento:</label>
+                  <select id="evento-select" class="form-control">
+                    <option value="">-- Selecione um evento --</option>
+                  </select>
+                </div>
+              </div>
+
+              <div
+                class="flex"
+                style="gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap"
+              >
+                <button id="btn-gerar-balizamento" class="btn btn-primary">
+                  Gerar Balizamento Automático
+                </button>
+                <button id="btn-limpar-balizamento" class="btn btn-secondary">
+                  Limpar Balizamento
+                </button>
+                <button
+                  id="btn-imprimir-balizamento"
+                  class="btn btn-info"
+                  disabled
+                >
+                  🖨️ Imprimir Balizamento
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensagens -->
+          <div id="mensagem-container"></div>
+
+          <!-- Balizamento -->
+          <div id="balizamento-container">
+            <p class="text-light" style="text-align: center">
+              Selecione um evento para visualizar o balizamento.
+            </p>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- CADASTRO CLUBE -->
+    <template id="cadastro-clube">
+      <section class="container">
+        <div class="section">
+          <div class="card mb-3">
+            <div class="card-header">Cadastrar Novo Clube</div>
+            <div class="card-body">
+              <form id="form-clube">
+                <div class="form-group">
+                  <label class="form-label">Nome do Clube:</label>
+                  <input
+                    type="text"
+                    id="nome-clube"
+                    class="form-control"
+                    placeholder="Ex: Náutico, Pinheiros, Minas Tênis"
+                    required
+                  />
+                </div>
+                <div class="flex" style="gap: 1rem">
+                  <button type="submit" class="btn btn-success">
+                    Salvar Clube
+                  </button>
+                  <button type="reset" class="btn btn-secondary">Limpar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Mensagens -->
+          <div id="mensagem-container"></div>
+
+          <!-- Lista de Clubes -->
+          <div class="card">
+            <div class="card-header">Clubes Cadastrados</div>
+            <div class="card-body">
+              <div id="lista-clubes"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- CADASTRO CATEGORIA -->
+    <template id="cadastro-categoria">
+      <section class="container">
+        <div class="section">
+          <div class="card mb-3">
+            <div class="card-header">Cadastrar Nova Categoria</div>
+            <div class="card-body">
+              <form id="form-categoria">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Nome da Categoria:</label>
+                    <input
+                      type="text"
+                      id="nome-categoria"
+                      class="form-control"
+                      placeholder="Ex: Juvenil 1, Sênior"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Ano Inicial:</label>
+                    <input
+                      type="number"
+                      id="ano-inicial"
+                      class="form-control"
+                      min="1950"
+                      max="2025"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Ano Final:</label>
+                    <input
+                      type="number"
+                      id="ano-final"
+                      class="form-control"
+                      min="1950"
+                      max="2025"
+                      required
+                    />
+                  </div>
+                </div>
+                <div style="margin-bottom: 1rem">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="ativo-categoria" checked />
+                    Ativa
+                  </label>
+                </div>
+                <div class="flex" style="gap: 1rem">
+                  <button type="submit" class="btn btn-success">
+                    Salvar Categoria
+                  </button>
+                  <button type="reset" class="btn btn-secondary">Limpar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Mensagens -->
+          <div id="mensagem-container"></div>
+
+          <!-- Lista de Categorias -->
+          <div class="card">
+            <div class="card-header">Categorias Cadastradas</div>
+            <div class="card-body">
+              <div id="lista-categorias-container"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- CADASTRO ATLETA -->
+    <template id="cadastro-atleta">
+      <section class="container">
+        <div class="section">
+          <!-- Mensagens -->
+          <div id="mensagem-container"></div>
+
+          <!-- Cabeçalho com botão Novo Atleta -->
+          <div class="card mb-3">
+            <div
+              class="card-header"
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <h3 style="margin: 0; color: #005f73">Atletas Cadastrados</h3>
+              <button
+                type="button"
+                class="btn btn-success"
+                id="btn-novo-atleta"
+              >
+                ➕ Novo Atleta
+              </button>
+            </div>
+            <div class="card-body">
+              <div id="lista-atletas-container"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODAL CADASTRO ATLETA -->
+      <div id="modal-atletaForm" class="modal-overlay" style="display: none">
+        <div class="modal-content" style="width: 500px">
+          <div class="modal-header">
+            <h3 id="modal-atletaForm-titulo">Novo Atleta</h3>
+            <span class="modal-close" onclick="fecharModalAtleta()">×</span>
+          </div>
+          <div class="modal-body">
+            <form id="form-atleta-modal">
+              <input type="hidden" id="atleta-id-modal" value="" />
+
+              <div class="form-group-modal">
+                <label for="nome-atleta-modal">Nome do Atleta:</label>
+                <input
+                  type="text"
+                  id="nome-atleta-modal"
+                  class="form-control"
+                  placeholder="Nome completo"
+                  required
+                />
+              </div>
+
+              <div class="form-row-modal">
+                <div class="form-group-modal">
+                  <label for="clube-select-modal">Clube:</label>
+                  <select id="clube-select-modal" class="form-control" required>
+                    <option value="">-- Selecione um clube --</option>
+                  </select>
+                </div>
+                <div class="form-group-modal">
+                  <label for="ano-nascimento-modal">Ano de Nascimento:</label>
+                  <input
+                    type="number"
+                    id="ano-nascimento-modal"
+                    class="form-control"
+                    min="1950"
+                    max="2025"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group-modal">
+                <label>Sexo:</label>
+                <div style="display: flex; gap: 1.5rem; margin-top: 0.4rem">
+                  <label
+                    class="checkbox-label"
+                    style="margin-bottom: 0; display: flex"
+                  >
+                    <input
+                      type="radio"
+                      name="sexo-modal"
+                      value="Masculino"
+                      required
+                    />
+                    Masculino
+                  </label>
+                  <label
+                    class="checkbox-label"
+                    style="margin-bottom: 0; display: flex"
+                  >
+                    <input type="radio" name="sexo-modal" value="Feminino" />
+                    Feminino
+                  </label>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Salvar</button>
+                <button
+                  type="button"
+                  class="btn btn-cancelar-modal"
+                  onclick="fecharModalAtleta()"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- CADASTRO PROVA -->
+    <template id="cadastro-prova">
+      <section class="container">
+        <div class="section">
+          <div class="card mb-3">
+            <div class="card-header">Cadastrar Nova Prova</div>
+            <div class="card-body">
+              <form id="form-prova">
+                <div class="form-group">
+                  <label class="form-label">Nome da Prova:</label>
+                  <input
+                    type="text"
+                    id="nome-prova"
+                    class="form-control"
+                    placeholder="Ex: 50m Borboleta, 100m Costas"
+                    required
+                  />
+                </div>
+                <div class="flex" style="gap: 1rem">
+                  <button type="submit" class="btn btn-success">
+                    Salvar Prova
+                  </button>
+                  <button type="reset" class="btn btn-secondary">Limpar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Mensagens -->
+          <div id="mensagem-container"></div>
+
+          <!-- Lista de Provas -->
+          <div class="card">
+            <div class="card-header">Provas Cadastradas</div>
+            <div class="card-body">
+              <div id="lista-provas-container"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- CADASTRO EVENTO -->
+    <!-- MODAL: CONFIGURAR PROVAS E CATEGORIAS DO EVENTO -->
+    <div id="modal-evento-config" class="modal-overlay" style="display: none">
+      <div class="modal-content" style="max-width: 900px">
+        <div class="modal-header">
+          <h3>Configurar Provas e Categorias do Evento</h3>
+          <button class="modal-close" onclick="fecharModalEventoConfig()">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body" style="padding: 1rem">
+          <div
+            style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem"
+          >
+            <!-- Card de Provas -->
+            <h4
+              style="
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+                color: #005f73;
+                font-size: 1rem;
+              "
+            >
+              📋 Provas
+            </h4>
+            <h4
+              style="
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+                color: #005f73;
+                font-size: 1rem;
+              "
+            >
+              🏆 Categorias
+            </h4>
+            <div
+              style="
+                background-color: #f8f9fa;
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                padding: 1rem;
+              "
+            >
+              <div style="margin-bottom: 0.5rem">
+                <label
+                  style="
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.9rem;
+                  "
+                >
+                  <input type="checkbox" id="select-all-provas-modal" />
+                  <strong>Selecionar Todos</strong>
+                </label>
+              </div>
+              <div
+                id="provas-container-modal"
+                style="max-height: 300px; overflow-y: auto; font-size: 0.9rem"
+              >
+                <!-- Preenchido por JavaScript -->
+              </div>
+            </div>
+
+            <!-- Card de Categorias -->
+            <div
+              style="
+                background-color: #f8f9fa;
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                padding: 1rem;
+              "
+            >
+              <div style="margin-bottom: 0.5rem">
+                <label
+                  style="
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-size: 0.9rem;
+                  "
+                >
+                  <input type="checkbox" id="select-all-categorias-modal" />
+                  <strong>Selecionar Todos</strong>
+                </label>
+              </div>
+              <div
+                id="categorias-container-modal"
+                style="max-height: 300px; overflow-y: auto; font-size: 0.9rem"
+              >
+                <!-- Preenchido por JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onclick="fecharModalEventoConfig()"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="btn-salvar-config-modal"
+          >
+            Salvar Configuração
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <template id="cadastro-evento">
+      <section class="container">
+        <div class="section">
+          <div class="card mb-3">
+            <div class="card-header">Cadastrar Novo Evento</div>
+            <div class="card-body">
+              <form id="form-evento">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Nome do Evento:</label>
+                    <input
+                      type="text"
+                      id="nome-evento"
+                      class="form-control"
+                      placeholder="Ex: Campeonato Estadual 2026"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Local:</label>
+                    <input
+                      type="text"
+                      id="local-evento"
+                      class="form-control"
+                      placeholder="Ex: São Paulo, SP"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Data:</label>
+                    <input
+                      type="date"
+                      id="data-evento"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Quantidade de Raias:</label>
+                    <input
+                      type="number"
+                      id="qtde-raias"
+                      class="form-control"
+                      min="1"
+                      max="10"
+                      value="8"
+                      required
+                    />
+                  </div>
+                </div>
+                <div style="margin-bottom: 1rem">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="evento-finalizado" />
+                    Evento Finalizado (não permite mais alterações)
+                  </label>
+                </div>
+                <div class="flex" style="gap: 1rem">
+                  <button type="submit" class="btn btn-success">
+                    Salvar Evento
+                  </button>
+                  <button type="reset" class="btn btn-secondary">Limpar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Mensagens -->
+          <div id="mensagem-container"></div>
+
+          <!-- Lista de Eventos -->
+          <div class="card">
+            <div class="card-header">Eventos Cadastrados</div>
+            <div class="card-body">
+              <div id="lista-eventos-container"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- GERENCIAR PROVAS EVENTO -->
+    <template id="gerenciar-provas-evento">
+      <section class="container">
+        <div class="section">
+          <div class="card mb-3">
+            <div class="card-header">Gerenciar Provas do Evento</div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label">Selecione o Evento:</label>
+                <select id="evento-filter" class="form-control">
+                  <option value="">-- Selecione um evento --</option>
+                </select>
+              </div>
+              <button
+                id="btn-adicionar-prova"
+                class="btn btn-primary"
+                style="margin-top: 1rem"
+              >
+                ➕ Adicionar Prova ao Evento
+              </button>
+            </div>
+          </div>
+
+          <!-- Mensagens -->
+          <div id="mensagem-container"></div>
+
+          <!-- Provas do Evento -->
+          <div class="card">
+            <div class="card-header">Provas do Evento</div>
+            <div class="card-body">
+              <div id="lista-provas-evento-container"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- MODAL: ADICIONAR PROVA AO EVENTO -->
+    <div
+      id="modal-adicionar-prova-evento"
+      class="modal-overlay"
+      style="display: none"
+    >
+      <div class="modal-content" style="width: 90%; max-width: 500px">
+        <div class="modal-header">
+          <h3>Adicionar Prova ao Evento</h3>
+          <span class="modal-close" onclick="fecharModalAdicionarProvaEvento()"
+            >×</span
+          >
+        </div>
+        <div class="modal-body">
+          <form id="form-adicionar-prova-evento">
+            <div class="form-group">
+              <label class="form-label">Prova:</label>
+              <select id="prova-select-evento" class="form-control" required>
+                <option value="">-- Selecione uma prova --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Categoria:</label>
+              <select
+                id="categoria-select-evento"
+                class="form-control"
+                required
+              >
+                <option value="">-- Selecione uma categoria --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Sexo:</label>
+              <div style="margin-top: 0.5rem">
+                <label
+                  style="
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  <input
+                    type="radio"
+                    name="sexo-evento"
+                    value="Masculino"
+                    required
+                  />
+                  Masculino
+                </label>
+                <label style="display: flex; align-items: center">
+                  <input
+                    type="radio"
+                    name="sexo-evento"
+                    value="Feminino"
+                    required
+                  />
+                  Feminino
+                </label>
+              </div>
+            </div>
+            <div
+              class="form-group"
+              style="
+                display: flex;
+                gap: 0.5rem;
+                justify-content: flex-end;
+                margin-top: 1.5rem;
+              "
+            >
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="fecharModalAdicionarProvaEvento()"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary">Adicionar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSCRIÇÃO -->
+    <template id="inscricao">
+      <section class="container">
+        <div class="section">
+          <!-- Seleção de Evento -->
+
+          <!-- Filtros -->
+          <div class="card mb-3">
+            <div class="card-header">
+              Filtros
+              <div id="info-evento" style="font-size: 0.95rem"></div>
+            </div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Evento: </label>
+                  <select id="evento-filter" class="form-control">
+                    <option value="">-- Selecione um evento --</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Filtrar por Clube:</label>
+                  <select id="filtro-clube" class="form-control">
+                    <option value="">Todos os clubes</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Filtrar por Atleta:</label>
+                  <select id="filtro-atleta" class="form-control">
+                    <option value="">Todos os atletas</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensagens -->
+          <div id="mensagem-container"></div>
+
+          <!-- RESUMO DE INSCRIÇÕES -->
+          <div
+            id="resumo-inscricoes-container"
+            class="card mb-3"
+            style="border: 2px solid #0a9396"
+          >
+            <div class="card-header" style="background: #0a9396; color: white">
+              📊 INSCRIÇÕES REALIZADAS
+            </div>
+            <div id="resumo-inscricoes-content" class="card-body"></div>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- UTILIDADES - BACKUP E RESTORE -->
+    <template id="utilidades">
+      <section class="container">
+        <div class="section">
+          <h1 style="color: #005f73; margin-bottom: 1.5rem">
+            🛠️ Utilidades - Backup e Restore
+          </h1>
+
+          <!-- Card de Ações -->
+          <div class="card mb-3">
+            <div class="card-header">Gerenciar Dados do Sistema</div>
+            <div class="card-body">
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                  gap: 1rem;
+                  margin-bottom: 2rem;
+                "
+              >
+                <!-- Botão Exportar -->
+                <div
+                  style="
+                    padding: 1.5rem;
+                    background: #f0f8ff;
+                    border: 2px solid #0a9396;
+                    border-radius: 8px;
+                    text-align: center;
+                  "
+                >
+                  <div style="font-size: 2rem; margin-bottom: 0.5rem">📤</div>
+                  <h3 style="color: #005f73; margin: 0.5rem 0">
+                    Exportar Dados
+                  </h3>
+                  <p
+                    style="color: #666; font-size: 0.9rem; margin-bottom: 1rem"
+                  >
+                    Faça backup de todos os dados do sistema em um arquivo JSON
+                  </p>
+                  <button id="btn-exportar-dados" class="btn btn-success">
+                    📥 Download Backup
+                  </button>
+                </div>
+
+                <!-- Botão Importar -->
+                <div
+                  style="
+                    padding: 1.5rem;
+                    background: #fff3cd;
+                    border: 2px solid #ffc107;
+                    border-radius: 8px;
+                    text-align: center;
+                  "
+                >
+                  <div style="font-size: 2rem; margin-bottom: 0.5rem">📥</div>
+                  <h3 style="color: #856404; margin: 0.5rem 0">
+                    Restaurar Dados
+                  </h3>
+                  <p
+                    style="color: #666; font-size: 0.9rem; margin-bottom: 1rem"
+                  >
+                    Restaure dados a partir de um arquivo JSON de backup
+                  </p>
+                  <button id="btn-importar-dados" class="btn btn-warning">
+                    📤 Upload Backup
+                  </button>
+                  <input
+                    type="file"
+                    id="input-arquivo-import"
+                    accept=".json"
+                    style="display: none"
+                  />
+                </div>
+              </div>
+
+              <div
+                style="
+                  padding: 1rem;
+                  background: #fff3cd;
+                  border-left: 4px solid #ffc107;
+                  border-radius: 4px;
+                "
+              >
+                <strong>⚠️ AVISO:</strong> Ao restaurar dados, TODOS os dados
+                atuais do sistema serão substituídos! Use com cuidado e sempre
+                faça backup antes.
+              </div>
+            </div>
+          </div>
+
+          <!-- Card de Estatísticas -->
+          <div class="card">
+            <div class="card-header">📊 Estatísticas do Sistema</div>
+            <div class="card-body">
+              <div id="container-estatisticas"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="js/database.js"></script>
+    <script src="js/exceljs.min.js"></script>
+    <script src="js/xlsx.min.js"></script>
+    <script src="js/router.js"></script>
+
+    <!-- SHARED UTILITIES -->
+    <script src="js/utils/time-utils.js"></script>
+    <script src="js/utils/export-utils.js"></script>
+
+    <!-- PAGE MODULES -->
+    <script src="js/pages/clube-page.js"></script>
+    <script src="js/pages/categoria-page.js"></script>
+    <script src="js/pages/atleta-page.js"></script>
+    <script src="js/pages/prova-page.js"></script>
+    <script src="js/pages/evento-page.js?v=5"></script>
+    <script src="js/pages/resultado-final-page.js"></script>
+    <script src="js/pages/resultados-page.js"></script>
+    <script src="js/pages/balizamento-page.js"></script>
+    <script src="js/pages/gerenciar-provas-evento-page.js?v=2"></script>
+    <script src="js/pages/inscricao-page.js?v=9"></script>
+    <script src="js/pages/utilidades-page.js"></script>
+
+    <!-- APP INITIALIZATION -->
+    <script src="js/app.js"></script>
+
+    <!-- SCRIPT PARA MENU COLAPSÁVEL -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuTitles = document.querySelectorAll(".menu-section-title");
+
+        menuTitles.forEach((title) => {
+          title.addEventListener("click", function (e) {
+            e.preventDefault();
+            const sectionId = this.dataset.section + "-menu";
+            const menu = document.getElementById(sectionId);
+            this.classList.toggle("expanded");
+            menu.classList.toggle("collapsed");
+          });
+        });
+
+        function expandSectionByHash() {
+          const hash = window.location.hash.substring(1);
+          let sectionName = null;
+
+          if (hash.startsWith("cadastro")) {
+            sectionName = "cadastros";
+          } else if (
+            hash.startsWith("gerenciar") ||
+            hash === "inscricao" ||
+            hash.startsWith("cadastro-evento")
+          ) {
+            sectionName = "configuracao";
+          } else if (
+            hash.startsWith("balizamento") ||
+            hash.startsWith("resultados")
+          ) {
+            sectionName = "operacoes";
+          } else if (hash === "resultado-final") {
+            sectionName = "resultados";
+          }
+
+          if (sectionName) {
+            expandSection(sectionName);
+          }
+        }
+
+        function expandSection(sectionName) {
+          document.querySelectorAll(".menu-section-title").forEach((title) => {
+            title.classList.remove("expanded");
+          });
+          document.querySelectorAll(".menu-items").forEach((menu) => {
+            menu.classList.add("collapsed");
+          });
+
+          const title = document.querySelector(
+            `[data-section="${sectionName}"]`,
+          );
+          const menu = document.getElementById(sectionName + "-menu");
+
+          if (title && menu) {
+            title.classList.add("expanded");
+            menu.classList.remove("collapsed");
+          }
+        }
+
+        window.addEventListener("hashchange", expandSectionByHash);
+        expandSectionByHash();
+      });
+    </script>
+  </body>
+</html>
