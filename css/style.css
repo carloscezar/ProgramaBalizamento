@@ -1,0 +1,2412 @@
+/* css/style.css */
+
+/* --- LAYOUT COM SIDEBAR --- */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f8ff;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+/* SIDEBAR MENU */
+.sidebar-menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(180deg, #0a9396 0%, #005f73 100%);
+  color: white;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.sidebar-header {
+  background-color: #005f73;
+  padding: 1.5rem 1rem;
+  border-bottom: 2px solid #94d2bd;
+  text-align: center;
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #94d2bd;
+}
+
+/* SEÇÕES DO MENU */
+.menu-section {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-section:last-child {
+  border-bottom: none;
+}
+
+.menu-section-title {
+  margin: 0 0 0.8rem 1rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #e9d8a6;
+  letter-spacing: 1px;
+}
+
+/* LINKS DO MENU */
+.menu-link {
+  display: block;
+  padding: 0.8rem 1rem;
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+  margin: 0 0.5rem;
+  border-radius: 0 4px 4px 0;
+}
+
+.menu-link:hover {
+  background-color: rgba(148, 210, 189, 0.3);
+  border-left-color: #94d2bd;
+  padding-left: 1.2rem;
+}
+
+.menu-link:active {
+  background-color: #94d2bd;
+  color: #001219;
+  border-left-color: #e9d8a6;
+  font-weight: bold;
+}
+
+/* CONTEÚDO PRINCIPAL */
+.main-content {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  min-height: 100vh;
+  background-color: #f0f8ff;
+}
+
+header {
+  background-color: #005f73;
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+  float: right;
+  margin-top: -2rem;
+}
+
+main {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* HOME CONTENT */
+.home-content {
+  text-align: center;
+}
+
+.home-content h2 {
+  color: #005f73;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.home-content > p {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* INFO CARDS */
+.home-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.info-card {
+  background: linear-gradient(135deg, #94d2bd 0%, #0a9396 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.info-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+}
+
+.info-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* PAGE CONTENT */
+.page-content {
+  width: 100%;
+}
+
+/* --- FORMULÁRIOS --- */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#categoria-display {
+  font-weight: bold;
+  color: #005f73;
+}
+
+#categorias-checkboxes div {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+/* Estilos para os botões de rádio de sexo */
+.radio-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.radio-group label {
+  font-weight: normal;
+  margin-right: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.radio-group input {
+  width: auto;
+  margin-right: 0;
+  cursor: pointer;
+}
+
+/* --- BOTÕES --- */
+button {
+  background-color: #0a9396;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #005f73;
+}
+
+.botoes-acao {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.botoes-fixos {
+  /* Usado na página de resultados */
+}
+
+.btn-perigo {
+  background-color: #d9534f; /* Vermelho */
+  color: white;
+}
+
+.btn-perigo:hover {
+  background-color: #c9302c;
+}
+
+.btn-remover-atleta,
+.btn-remover-prova {
+  background-color: #f0ad4e; /* Laranja/Amarelo */
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-remover-atleta:hover,
+.btn-remover-prova:hover {
+  background-color: #ec971f;
+}
+
+/* --- LAYOUT DE PROVAS E TABELAS --- */
+.prova-section {
+  margin-bottom: 2rem;
+}
+
+/* Esconde as provas vazias (placeholders) da visualização normal na tela */
+.prova-section.placeholder {
+  display: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0rem;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+thead {
+  background-color: #94d2bd;
+  color: #001219;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 2rem 0;
+}
+
+/* Estilo para os inputs de tempo na tabela de resultados */
+.tempo-resultado-input {
+  width: 120px;
+}
+
+/* --- DRAG AND DROP (SORTABLE) --- */
+#lista-provas-tbody tr {
+  cursor: grab;
+}
+
+#lista-provas-tbody tr:active {
+  cursor: grabbing;
+}
+
+/* Faz o título da série parecer "agarrável" */
+.serie-titulo-arrastavel {
+  cursor: grab;
+}
+
+.serie-titulo-arrastavel:active {
+  cursor: grabbing;
+}
+
+.sortable-ghost {
+  opacity: 0.4;
+  background-color: #c8ebfb;
+}
+
+.sortable-chosen {
+  opacity: 1 !important;
+}
+
+/* --- ESTILO: INPUT DE NÚMERO DA PROVA (TELA) --- */
+.input-numero-prova {
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: bold;
+  color: inherit;
+  width: 45px !important;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  margin: 0 5px;
+  padding: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.input-numero-prova:focus {
+  border-color: #0a9396;
+  outline: none;
+  box-shadow: 0 0 3px rgba(10, 147, 150, 0.3);
+}
+
+/* Remove setinhas do input number */
+.input-numero-prova::-webkit-outer-spin-button,
+.input-numero-prova::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.input-numero-prova[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Ajuste para alinhar o texto do título */
+.prova-section h3 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* --- ESTILO: SPAN ESPELHO (ESCONDIDO NA TELA) --- */
+.numero-print {
+  display: none; /* Não aparece na tela, só o input aparece */
+}
+
+/* ######################################################## */
+/* ### REGRAS DE IMPRESSÃO / PDF (BLOCO FINAL)      ### */
+/* ######################################################## */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 1cm;
+  }
+
+  /* Ocultar elementos desnecessários */
+  body > header,
+  .main-menu,
+  .botoes-acao,
+  .botoes-fixos,
+  hr,
+  .form-section,
+  form,
+  .btn-remover-atleta,
+  .btn-remover-prova,
+  .coluna-acao,
+  .management-section h2,
+  .management-section p,
+  .entrada-container {
+    display: none !important;
+  }
+
+  /* Layout Principal */
+  main {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+  }
+
+  /* Tabelas */
+  table,
+  th,
+  td {
+    border: 1px solid #000;
+    color: #000;
+    font-size: 10pt;
+  }
+  thead {
+    background-color: #ddd !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Quebras de página */
+  .prova-section,
+  table,
+  .prova-bloco {
+    page-break-inside: avoid;
+  }
+  h3,
+  h4 {
+    page-break-after: avoid;
+    color: #000 !important;
+  }
+  .prova-section.placeholder {
+    display: block;
+  }
+  #resultados-finais-container,
+  .classificacao-container,
+  .prova-bloco {
+    display: block !important;
+  }
+
+  /* --- A MÁGICA DO NÚMERO (CORREÇÃO DO ESPAÇO) --- */
+
+  /* 1. Esconde totalmente o INPUT na impressão */
+  .input-numero-prova {
+    display: none !important;
+  }
+
+  /* 2. Mostra o SPAN (Texto puro) na impressão */
+  .numero-print {
+    display: inline-block !important;
+    margin: 0 5px; /* Pequeno espaço entre "Prova" e o número */
+    color: #000;
+    font-weight: bold;
+  }
+
+  /* Garante alinhamento de texto normal */
+  .prova-section h3 {
+    display: block;
+    align-items: baseline;
+  }
+}
+
+/* ESTILO DO BOTÃO EDITAR (NOVO) */
+.btn-editar-atleta {
+  background-color: #17a2b8; /* Azul piscina */
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  margin-right: 5px; /* Espaço entre o botão editar e o remover */
+}
+.btn-editar-atleta:hover {
+  background-color: #138496;
+}
+
+/* ... (mantenha o .btn-remover-atleta e o resto) ... */
+
+/* IMPORTANTE: No bloco @media print, garanta que o botão editar também suma */
+@media print {
+  /* ... */
+  .btn-remover-atleta,
+  .btn-remover-prova,
+  .btn-editar-atleta,
+  .btn-editar-categoria,
+  .btn-toggle-categoria,
+  .coluna-acoes,
+  .coluna-acao {
+    display: none !important;
+  }
+  /* ... */
+}
+
+/* --- ESTILOS PARA CHECKBOXES E CONFIGURAÇÃO DE EVENTOS --- */
+
+/* Padronização de botões na coluna de ações */
+.select-all-container {
+  background-color: #e8f4f8;
+  border: 1px solid #94d2bd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 1rem;
+}
+
+.select-all-container label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  cursor: pointer;
+  font-weight: bold;
+  color: #005f73;
+}
+
+.select-all-container input[type="checkbox"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: #0a9396;
+}
+
+.coluna-acoes {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.coluna-acoes button {
+  padding: 5px 10px !important;
+  font-size: 12px !important;
+  border-radius: 3px !important;
+  border: none !important;
+  cursor: pointer !important;
+  white-space: nowrap;
+  min-width: 70px;
+  text-align: center;
+}
+
+.btn-editar-categoria,
+.btn-toggle-categoria,
+.btn-remover-categoria {
+  padding: 5px 10px !important;
+  font-size: 12px !important;
+  border-radius: 3px !important;
+  border: none !important;
+  cursor: pointer !important;
+  white-space: nowrap;
+  min-width: 70px;
+  text-align: center;
+}
+
+.configuracao-container {
+  display: flex;
+  gap: 2rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.config-section {
+  flex: 1;
+  min-width: 300px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+.config-section h3 {
+  color: #005f73;
+  margin-top: 0;
+}
+
+.config-section p {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.checkboxes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.5rem;
+}
+
+.grupo-checkbox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  padding: 0.1rem 0.5rem;
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkbox-item input[type="checkbox"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: #0a9396;
+}
+
+.checkbox-item label {
+  cursor: pointer;
+  flex: 1;
+  margin: 0;
+  user-select: none;
+  font-size: 0.95rem;
+}
+
+.checkbox-item label:hover {
+  color: #0a9396;
+}
+
+#btn-salvar-config {
+  background-color: #0a9396;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+#btn-salvar-config:hover {
+  background-color: #094747;
+}
+
+.btn-editar-evento {
+  background-color: #17a2b8;
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.btn-editar-evento:hover {
+  background-color: #138496;
+}
+
+.btn-editar-categoria {
+  background-color: #17a2b8;
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.btn-editar-categoria:hover {
+  background-color: #138496;
+}
+
+.btn-ativar {
+  background-color: #28a745;
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  margin: 0 2px;
+}
+
+.btn-ativar:hover {
+  background-color: #218838;
+}
+
+.btn-desativar {
+  background-color: #ffc107;
+  color: #333;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  margin: 0 2px;
+}
+
+.btn-desativar:hover {
+  background-color: #e0a800;
+}
+
+.btn-remover-evento {
+  background-color: #dc3545;
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-remover-evento:hover {
+  background-color: #c82333;
+}
+
+/* --- MELHORES TEMPOS DO ATLETA --- */
+#container-melhores-tempos {
+  padding: 15px;
+  background-color: #f0f9fa;
+  border-radius: 5px;
+  border: 1px solid #94d2bd;
+}
+
+.tempo-input-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.prova-select,
+.tempo-input {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.btn-adicionar-tempo {
+  background-color: #0a9396;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  min-width: 150px;
+}
+
+.btn-adicionar-tempo:hover {
+  background-color: #005f73;
+}
+
+#tabela-melhores-tempos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+#tabela-melhores-tempos thead {
+  background-color: #005f73;
+  color: white;
+}
+
+#tabela-melhores-tempos th,
+#tabela-melhores-tempos td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+#tabela-melhores-tempos tbody tr:hover {
+  background-color: #e8f4f8;
+}
+
+.btn-remover-tempo {
+  background-color: #d32f2f;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.btn-remover-tempo:hover {
+  background-color: #b71c1c;
+}
+
+/* ===== INSCRIÇÕES ===== */
+
+.info-box {
+  background-color: #e0f7fa;
+  border-left: 4px solid #0a9396;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #003844;
+}
+
+.badge-finalizado {
+  background-color: #b71c1c;
+  color: white;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-left: 0.5rem;
+}
+
+.clube-section {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #94d2bd;
+  margin-top: 1.25rem;
+  overflow: hidden;
+}
+
+.clube-header {
+  background-color: #0a9396;
+  color: white;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clube-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.clube-stats {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.atletas-inscricao-lista {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.atleta-inscricao-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.atleta-inscricao-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.9rem;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s;
+}
+
+.atleta-inscricao-header:hover {
+  background-color: #e8f4f8;
+}
+
+.atleta-inscricao-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.atleta-nome {
+  font-weight: bold;
+  font-size: 0.95rem;
+  color: #005f73;
+}
+
+.atleta-detalhes {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.atleta-inscricao-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.badge-inscricoes {
+  background-color: #e0e0e0;
+  color: #555;
+  border-radius: 12px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.badge-inscricoes.ativo {
+  background-color: #0a9396;
+  color: white;
+}
+
+.toggle-icon {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.atleta-provas-container {
+  border-top: 1px solid #e0e0e0;
+  padding: 0.75rem;
+  background-color: #fafffe;
+}
+
+.provas-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.prova-check-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.prova-check-label:hover {
+  border-color: #0a9396;
+  background-color: #e0f7fa;
+}
+
+.prova-check-label.inscrito {
+  border-color: #0a9396;
+  background-color: #cceeff;
+  font-weight: bold;
+  color: #003844;
+}
+
+.prova-check-label input[type="checkbox"] {
+  accent-color: #0a9396;
+}
+
+.prova-check-numero {
+  color: #888;
+  font-size: 0.78rem;
+}
+
+.prova-check-nome {
+  font-weight: 600;
+}
+
+.prova-check-categoria {
+  color: #555;
+  font-size: 0.8rem;
+}
+
+.tempo-ref {
+  background-color: #e8f4f8;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.78rem;
+  color: #005f73;
+  font-family: monospace;
+}
+
+.tempo-ref.sem-tempo {
+  background-color: #f5f5f5;
+  color: #aaa;
+  font-style: italic;
+}
+
+.atleta-acoes-inscricao {
+  margin-top: 0.6rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-sm {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.82rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.msg-vazio {
+  color: #888;
+  text-align: center;
+  padding: 2rem;
+  font-style: italic;
+}
+
+.btn-secondary {
+  background-color: #0a9396;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #005f73;
+}
+
+.btn-danger {
+  background-color: #c62828;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #b71c1c;
+}
+
+/* ===== ESTILOS PARA BALIZAMENTO ===== */
+
+.secao-controles {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.grupo-filtros {
+  flex: 1;
+  min-width: 250px;
+}
+
+.grupo-filtros label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.grupo-filtros select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.grupo-acoes {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#btn-gerar-balizamento,
+#btn-limpar-balizamento {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+#btn-gerar-balizamento {
+  background-color: #0a9396;
+  color: white;
+}
+
+#btn-gerar-balizamento:hover {
+  background-color: #005f73;
+}
+
+#btn-limpar-balizamento {
+  background-color: #e9d8a6;
+  color: #001219;
+}
+
+#btn-limpar-balizamento:hover {
+  background-color: #d4a574;
+}
+
+.mensagem-container {
+  margin-bottom: 1rem;
+  min-height: 2rem;
+}
+
+.mensagem {
+  padding: 1rem;
+  border-radius: 4px;
+  font-weight: bold;
+  animation: fadeIn 0.3s;
+}
+
+.mensagem-sucesso {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.mensagem-erro {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.mensagem-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.balizamento-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.info-vazia {
+  text-align: center;
+  color: #888;
+  padding: 2rem;
+  font-style: italic;
+}
+
+.prova-card {
+  border: 2px solid #0a9396;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+  transition: box-shadow 0.3s;
+}
+
+.prova-card:hover {
+  box-shadow: 0 6px 16px rgba(10, 147, 150, 0.15);
+}
+
+.prova-series-container {
+  padding: 0.5rem;
+}
+
+.serie-container {
+  margin-bottom: 1.5rem;
+}
+
+.prova-header {
+  background-color: #0a9396;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px 8px 0 0;
+}
+
+.prova-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.prova-subheader {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  color: #e0f2f1;
+}
+
+.prova-stats {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.btn-adicionar-manual-prova {
+  background-color: #0a9396;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.btn-adicionar-manual-prova:hover {
+  background-color: #005f73;
+  transform: scale(1.05);
+}
+
+.badge {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.35rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.serie-container h4 {
+  background-color: #94d2bd;
+  color: #001219;
+  padding: 0.5rem 1rem;
+  margin: 1rem 0 0.75rem 0;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.nome-atleta {
+  color: #001219;
+  font-size: 0.95rem;
+}
+
+.raias-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .raias-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .raias-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+.raia-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 1rem;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all 0.3s;
+}
+
+.raia-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  border-color: #0a9396;
+}
+
+.raia-numero {
+  font-weight: bold;
+  color: #005f73;
+  font-size: 1rem;
+  border-bottom: 2px solid #94d2bd;
+  padding-bottom: 0.5rem;
+}
+
+.raia-numero strong {
+  font-size: 1.05rem;
+}
+
+.atleta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+  min-height: 60px;
+  justify-content: center;
+}
+
+.clube-atleta {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.tempo-ref {
+  color: #0a9396;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background-color: #f0f8f8;
+  padding: 0.3rem 0.6rem;
+  border-radius: 3px;
+}
+
+.raia-acoes {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  border-top: 1px solid #eee;
+  padding-top: 0.75rem;
+}
+
+.btn-reorganizar,
+.btn-remover-balizamento {
+  flex: 1;
+  padding: 0.4rem 0.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.btn-reorganizar {
+  background-color: #94d2bd;
+  color: #001219;
+}
+
+.btn-reorganizar:hover {
+  background-color: #5a8c7e;
+  color: white;
+  transform: scale(1.02);
+}
+
+.btn-remover-balizamento {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.btn-remover-balizamento:hover {
+  background-color: #c92a2a;
+  transform: scale(1.02);
+}
+
+/* ===== ESTILOS DA TABELA DE RAIAS ===== */
+.raias-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.raias-tabela thead {
+  background-color: #0a9396;
+  color: white;
+  font-weight: bold;
+}
+
+.raias-tabela th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.9rem;
+  border-bottom: 2px solid #005f73;
+}
+
+.raias-tabela tbody tr {
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s;
+}
+
+.raias-tabela tbody tr:hover {
+  background-color: #f0f8ff;
+}
+
+.raias-tabela td {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+.raia-cell {
+  font-weight: bold;
+  color: #005f73;
+  text-align: center;
+  width: 60px;
+  background-color: #f8f9fa;
+}
+
+.atleta-cell {
+  font-weight: 600;
+  color: #001219;
+}
+
+.clube-cell {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.tempo-cell {
+  color: #0a9396;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.acoes-cell {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+  width: 100px;
+}
+
+.btn-pequeno {
+  padding: 0.4rem 0.6rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  background-color: #94d2bd;
+  color: #001219;
+  font-weight: 600;
+}
+
+.btn-pequeno:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-remover-balizamento.btn-pequeno {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.btn-remover-balizamento.btn-pequeno:hover {
+  background-color: #c92a2a;
+}
+
+.btn-voltar {
+  color: white;
+  text-decoration: none;
+  float: right;
+  margin-top: -1.5rem;
+  padding: 0.5rem 1rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.btn-voltar:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== ESTILOS PARA ADIÇÃO MANUAL DE ATLETAS ===== */
+
+.secao-adicionar-manual {
+  background-color: #f0f8f8;
+  border: 2px solid #94d2bd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+.secao-adicionar-manual h3 {
+  margin-top: 0;
+  color: #005f73;
+  font-size: 1.1rem;
+  border-bottom: 2px solid #0a9396;
+  padding-bottom: 0.5rem;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.formulario-adicionar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.form-row .form-group {
+  flex: 1;
+  min-width: 200px;
+  margin-bottom: 0;
+}
+
+.form-row .form-group label {
+  margin-bottom: 0.3rem;
+  font-size: 0.95rem;
+}
+
+.form-row .form-group input,
+.form-row .form-group select {
+  padding: 0.6rem;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-row .form-group {
+    min-width: 100%;
+  }
+
+  .form-row .form-group input,
+  .form-row .form-group select {
+    width: 100%;
+  }
+}
+
+.btn-adicionar,
+.btn-cancelar {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  min-width: 120px;
+}
+
+.btn-adicionar {
+  background-color: #0a9396;
+  color: white;
+}
+
+.btn-adicionar:hover {
+  background-color: #005f73;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-cancelar {
+  background-color: #e9d8a6;
+  color: #001219;
+}
+
+.btn-cancelar:hover {
+  background-color: #d4a574;
+}
+
+.btn-imprimir {
+  background-color: #5a8c7e;
+  color: white;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.btn-imprimir:hover {
+  background-color: #3d6b5f;
+  transform: scale(1.05);
+}
+
+.btn-imprimir:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: scale(1);
+}
+
+.btn-adicionar-manual {
+  background-color: #0a9396;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.btn-adicionar-manual:hover {
+  background-color: #005f73;
+  transform: scale(1.05);
+}
+
+/* ===== ESTILOS PARA MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 400px;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-in-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  background-color: #0a9396;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.modal-close:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.form-group-modal {
+  margin-bottom: 1rem;
+}
+
+.form-group-modal label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #001219;
+  font-size: 0.95rem;
+}
+
+.form-group-modal input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.form-group-modal input:focus {
+  outline: none;
+  border-color: #0a9396;
+  background-color: #f9feff;
+}
+
+.form-group-modal input[readonly] {
+  background-color: #f5f5f5;
+  color: #666;
+  cursor: not-allowed;
+  border-color: #ddd;
+}
+
+.form-row-modal {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-row-modal .form-group-modal {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.info-texto {
+  display: block;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 0.3rem;
+}
+
+.modal-erro {
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  color: #856404;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.modal-warning {
+  background-color: #d4edda;
+  border: 1px solid #28a745;
+  color: #155724;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.modal-footer {
+  padding: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  border-top: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+}
+
+.btn-salvar {
+  background-color: #28a745;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+}
+
+.btn-salvar:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btn-salvar:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.btn-cancelar-modal {
+  background-color: #6c757d;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+}
+
+.btn-cancelar-modal:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+/* ===== ESTILOS PARA IMPRESSÃO ===== */
+
+@media print {
+  header,
+  .secao-controles,
+  .mensagem-container,
+  .secao-adicionar-manual,
+  .btn-reorganizar,
+  .btn-remover-balizamento,
+  .btn-voltar,
+  .grupo-acoes {
+    display: none !important;
+  }
+
+  body {
+    background-color: white;
+  }
+
+  main {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    background-color: white;
+  }
+
+  .balizamento-container {
+    gap: 0.5rem;
+  }
+
+  .prova-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #333;
+    margin-bottom: 1rem;
+  }
+
+  .prova-header {
+    background-color: #f0f0f0;
+    color: #000;
+    border: 1px solid #333;
+    border-radius: 0;
+  }
+
+  .prova-header h3,
+  .prova-header .prova-subheader {
+    color: black;
+    margin: 0;
+  }
+
+  .prova-subheader {
+    opacity: 1 !important;
+  }
+
+  .serie-container h4 {
+    background-color: #e0e0e0;
+    color: black;
+    border: 1px solid #999;
+    page-break-after: avoid;
+  }
+
+  .raias-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+
+  .raia-card {
+    border: 1px solid #333;
+    box-shadow: none;
+    padding: 0.5rem;
+    page-break-inside: avoid;
+  }
+
+  .raia-numero {
+    font-size: 0.9rem;
+    border-bottom: 1px solid #999;
+    padding-bottom: 0.3rem;
+  }
+
+  .atleta-info {
+    min-height: auto;
+    gap: 0.2rem;
+  }
+
+  .nome-atleta,
+  .clube-atleta,
+  .tempo-ref {
+    font-size: 0.8rem;
+  }
+
+  .tempo-ref {
+    background-color: #f5f5f5;
+  }
+}
+
+/* ===== ESTILOS PARA LANÇAR RESULTADOS ===== */
+
+/* Seção de Filtros */
+.secao-filtros-resultados {
+  background-color: #f0f4f8;
+  border: 1px solid #d0d8e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 250px;
+}
+
+.filtro-grupo label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.filtro-grupo select {
+  padding: 0.75rem;
+  border: 1px solid #999;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.filtro-grupo select:focus {
+  outline: none;
+  border-color: #0a9396;
+  box-shadow: 0 0 5px rgba(10, 147, 150, 0.3);
+}
+
+.filtro-grupo-checkboxes {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.filtro-grupo-checkboxes label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+.filtro-grupo-checkboxes input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #0a9396;
+}
+
+.btn-secundario {
+  padding: 0.75rem 1.5rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.btn-secundario:hover {
+  background-color: #5a6268;
+}
+
+/* Container de Mensagens */
+.mensagem-container {
+  margin-bottom: 1rem;
+  min-height: 0;
+}
+
+/* Container de Resultados */
+.resultados-container {
+  margin-bottom: 2rem;
+}
+
+/* Botões de Ação (Rodapé) */
+.botoes-acao-rodape {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+}
+
+.btn-salvar,
+.btn-imprimir {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-salvar {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-salvar:hover:not(:disabled) {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-salvar:disabled {
+  background-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.btn-imprimir {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-imprimir:hover:not(:disabled) {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-imprimir:disabled {
+  background-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.prova-bloco-resultados {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.prova-header-resultados {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #0a9396;
+}
+
+.prova-titulo {
+  flex: 1;
+}
+
+.prova-titulo strong {
+  font-size: 1.1rem;
+  color: #333;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.prova-categoria {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+.prova-status {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-badge.pendente {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.status-badge.finalizada {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status-badge.impressa {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+.grid-resultados {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.grid-resultados thead {
+  background-color: #0a9396;
+  color: white;
+}
+
+.grid-resultados th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  border: 1px solid #0a9396;
+}
+
+.grid-resultados td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+}
+
+.grid-resultados tr.row-claro {
+  background-color: #ffffff;
+}
+
+.grid-resultados tr.row-escuro {
+  background-color: #f5f5f5;
+}
+
+.grid-resultados tr:hover {
+  background-color: #e8f4f8;
+}
+
+.input-tempo-final,
+.checkbox-desqualificado {
+  font-family: inherit;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.input-tempo-final {
+  width: 100%;
+  max-width: 100px;
+}
+
+.input-tempo-final:disabled {
+  background-color: #f0f0f0;
+  color: #999;
+  cursor: not-allowed;
+  border-color: #ddd;
+}
+
+.checkbox-desqualificado {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #ff6b6b;
+}
+
+.checkbox-desqualificado:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.mensagem {
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+.mensagem-sucesso {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.mensagem-erro {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.mensagem-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ===== ESTILOS PARA RESULTADOS (SÉRIE) ===== */
+
+/* Título da Série */
+.serie-titulo {
+  font-size: 1rem;
+  color: #333;
+  margin: 1.5rem 0 0.75rem 0;
+  padding: 0.5rem 0;
+  border-left: 4px solid #0a9396;
+  padding-left: 0.75rem;
+}
+
+/* Grid/Tabela de Série */
+.grid-resultados-serie {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.grid-resultados-serie thead {
+  background-color: #0a9396;
+  color: white;
+}
+
+.grid-resultados-serie th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  border: 1px solid #0a9396;
+}
+
+.grid-resultados-serie td {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+}
+
+.grid-resultados-serie tr.row-claro {
+  background-color: #ffffff;
+}
+
+.grid-resultados-serie tr.row-escuro {
+  background-color: #f5f5f5;
+}
+
+.grid-resultados-serie tr.row-desqualificado {
+  background-color: #f8d7da;
+  color: #721c24;
+  font-weight: 500;
+}
+
+.grid-resultados-serie tr:hover {
+  background-color: #e8f4f8;
+}
+
+.grid-resultados-serie tr.row-desqualificado:hover {
+  background-color: #f5c6cb;
+}
+
+/* Células */
+.raia-cell,
+.tempo-cell,
+.acoes-cell {
+  text-align: center;
+}
+
+/* Input Tempo */
+.input-tempo {
+  width: 100%;
+  max-width: 120px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9rem;
+  background-color: #fff;
+  cursor: pointer;
+  text-align: center;
+}
+
+.input-tempo:focus {
+  outline: none;
+  border-color: #0a9396;
+  box-shadow: 0 0 5px rgba(10, 147, 150, 0.3);
+}
+
+.input-tempo:disabled {
+  background-color: #f0f0f0;
+  color: #999;
+  cursor: not-allowed;
+  border-color: #ddd;
+}
+
+/* Checkbox Label */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin: 0;
+  justify-content: center;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #ff6b6b;
+}
+
+/* Botão Imprimir */
+.btn-imprimir-prova {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  transition: all 0.2s;
+}
+
+.btn-imprimir-prova:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botão Salvar Série */
+.btn-salvar-serie {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 1rem 0 1.5rem 0;
+  transition: all 0.2s;
+}
+
+.btn-salvar-serie:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-salvar-serie:disabled {
+  background-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+}
