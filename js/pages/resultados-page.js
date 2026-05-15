@@ -20,14 +20,13 @@ window.ResultadosPage = {
 
         // ===== CARREGAMENTO INICIAL =====
         function carregarEventos() {
-            const eventos = getEventos(); // ✅ Mostrar TODOS os eventos, finalizados ou não
+            const eventos = getEventos().filter(e => !e.isFinalizado);
             eventoFilter.innerHTML = '<option value="">-- Selecione um evento --</option>';
             
             eventos.forEach(evento => {
                 const option = document.createElement('option');
                 option.value = evento.id;
-                const statusLabel = evento.isFinalizado ? ' [FINALIZADO]' : '';
-                option.textContent = `${evento.nome} (${evento.local})${statusLabel}`;
+                option.textContent = `${evento.nome} (${evento.local})`;
                 eventoFilter.appendChild(option);
             });
 
@@ -91,7 +90,6 @@ window.ResultadosPage = {
                 return;
             }
 
-            const evento = getEventos().find(e => e.id === eventoId);
             const agrupado = grouparBalizamentosPorProvaESerie(eventoId);
             const provasEventoIds = Object.keys(agrupado);
 
@@ -101,27 +99,6 @@ window.ResultadosPage = {
             }
 
             resultadosContainer.innerHTML = '';
-            
-            // ✅ Mostrar aviso se evento está finalizado
-            if (evento?.isFinalizado) {
-                const avisoDiv = document.createElement('div');
-                avisoDiv.style.cssText = `
-                    background-color: #fff3cd;
-                    border: 2px solid #ffc107;
-                    color: #856404;
-                    padding: 1rem;
-                    border-radius: 6px;
-                    margin-bottom: 1rem;
-                    font-weight: 500;
-                `;
-                avisoDiv.innerHTML = `
-                    ⚠️ <strong>Este evento está FINALIZADO</strong>
-                    <br>
-                    <span style="font-size: 0.9rem;">Você pode continuar adicionando/editando resultados, mas será necessário "desfinalize" o evento antes de finalizar novamente.</span>
-                `;
-                resultadosContainer.appendChild(avisoDiv);
-            }
-            
             alteracoesPorSerie = {};
 
             provasEventoIds
@@ -366,12 +343,12 @@ window.ResultadosPage = {
                 const provaId = getProvaIdFromProvaEvento(provaEventoId);
                 const resultadosProvaAtletaStored = JSON.parse(localStorage.getItem('resultadosProvaAtleta')) || [];
 
-                // Atualizar cada atleta com nova posição e tempo
+                // Atualizar ou criar cada atleta com nova posição e tempo
                 atletasOrdenados.forEach((atleta, indice) => {
                     const posicao = indice + 1;
                     
                     // Buscar na lista carregada do localStorage
-                    const resultadoAtleta = resultadosProvaAtletaStored.find(
+                    let resultadoAtleta = resultadosProvaAtletaStored.find(
                         rpa => rpa.resultadoProvaId === resultado.id && rpa.atletaId === atleta.atletaId
                     );
                     
@@ -379,6 +356,17 @@ window.ResultadosPage = {
                         // Atualizar existente
                         resultadoAtleta.tempoFinal = atleta.tempoFinal;
                         resultadoAtleta.posicao = posicao;
+                    } else {
+                        // ✅ CRIAR novo registro se atleta não estava nos resultados
+                        resultadoAtleta = {
+                            id: `rpa-${Date.now()}-${Math.random()}`,
+                            resultadoProvaId: resultado.id,
+                            atletaId: atleta.atletaId,
+                            tempoFinal: atleta.tempoFinal,
+                            desqualificado: false,
+                            posicao: posicao
+                        };
+                        resultadosProvaAtletaStored.push(resultadoAtleta);
                     }
 
                     // Atualizar melhor tempo
