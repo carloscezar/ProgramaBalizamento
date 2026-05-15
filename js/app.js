@@ -257,17 +257,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const provasSelecionadas = Array.from(document.querySelectorAll('input[name="prova-inscricao"]:checked'))
                 .map(checkbox => checkbox.value);
 
-            if (provasSelecionadas.length === 0) {
-                alert('Selecione pelo menos uma prova!');
-                return;
-            }
+            // Obter inscrições atuais do atleta
+            const atletaInscricoes = getInscricoesPorAtletaEvento(atletaId, eventoId);
+            
+            // Identificar provas que devem ser removidas (estavam inscritas mas foram desmarcadas)
+            const provasParaRemover = atletaInscricoes.filter(insc => 
+                !provasSelecionadas.includes(insc.eventoProvaId)
+            );
 
-            // Salvar inscrições
+            // Remover as provas desmarcadas
+            provasParaRemover.forEach(insc => {
+                removerInscricao(atletaId, insc.eventoProvaId);
+            });
+
+            // Salvar as provas selecionadas (adicionar as novas)
             provasSelecionadas.forEach(provaEventoId => {
                 salvarInscricao(atletaId, provaEventoId);
             });
 
-            alert(`✓ ${provasSelecionadas.length} prova(s) inscrita(s) com sucesso!`);
+            const mensagem = provasParaRemover.length > 0 
+                ? `✓ Inscrições atualizadas! (+${provasSelecionadas.length} prova(s), -${provasParaRemover.length} prova(s))`
+                : `✓ ${provasSelecionadas.length} prova(s) inscrita(s) com sucesso!`;
+            alert(mensagem);
             
             // Atualizar resumo se estiver na página de inscrição
             if (window.InscricaoPage && window.InscricaoPage.atualizarResumo) {
