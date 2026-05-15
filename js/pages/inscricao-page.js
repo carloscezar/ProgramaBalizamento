@@ -10,7 +10,7 @@ window.InscricaoPage = {
         const infoEvento = document.getElementById('info-evento');
 
         if (!eventoFilter) {
-                        return;
+            return;
         }
 
         let eventoSelecionadoId = null;
@@ -31,7 +31,7 @@ window.InscricaoPage = {
             if (eventos.length === 1) {
                 eventoFilter.value = eventos[0].id;
                 eventoSelecionadoId = eventos[0].id;  // ✅ Setar ANTES de chamar renderizarDados
-                                renderizarDados();
+                renderizarDados();
             }
         }
 
@@ -102,15 +102,15 @@ window.InscricaoPage = {
             
             const valorAtual = filtroAtleta.value;
             const filtroClubeSel = filtroClube ? filtroClube.value : '';
-                                    filtroAtleta.innerHTML = '<option value="">Todos os atletas</option>';
+            filtroAtleta.innerHTML = '<option value="">Todos os atletas</option>';
 
             if (!eventoSelecionadoId) {
-                                return;
+                return;
             }
 
             const atletas = getAtletas();
             const provasEvento = getProvasEventoDetalhadas(eventoSelecionadoId);
-                                    const atletasElegiveis = atletas
+            const atletasElegiveis = atletas
                 .filter(atleta => !filtroClubeSel || atleta.clubeId === filtroClubeSel)
                 .filter(atleta => {
                     if (provasEvento.length === 0) return true;
@@ -119,7 +119,7 @@ window.InscricaoPage = {
                 })
                 .sort((a, b) => a.nome.localeCompare(b.nome));
 
-                        atletasElegiveis.forEach(atleta => {
+            atletasElegiveis.forEach(atleta => {
                 const option = document.createElement('option');
                 option.value = atleta.id;
                 option.textContent = atleta.nome;
@@ -168,8 +168,9 @@ window.InscricaoPage = {
 
                 // Concatena provas em uma string descritiva com categoria
                 const descricaoProvas = provasInscritas
+                    .sort((a,b) => a.numeroProva - b.numeroProva)
                     .map(p => `#${p.numeroProva} - ${p.provaNome}`)
-                    .join(' • ');
+                    .join(' <br> ');
 
                 linhas.push({
                     clube: clubesMap[atleta.clubeId]?.nome || 'Desconhecido',
@@ -219,9 +220,12 @@ window.InscricaoPage = {
             const headerRow = document.createElement('tr');
             
             const headers = ['🏢 Clube', '👤 Atleta', '🏊 Provas Inscritas', 'Ações'];
-            headers.forEach(headerText => {
+            headers.forEach((headerText) => {
                 const th = document.createElement('th');
                 th.textContent = headerText;
+                if (headerText === "Ações") {
+                    th.style.minWidth = '8rem';
+                }
                 headerRow.appendChild(th);
             });
             thead.appendChild(headerRow);
@@ -261,6 +265,7 @@ window.InscricaoPage = {
 
                 // Célula Ações
                 const tdAcoes = document.createElement('td');
+                tdAcoes.style.minWidth = '140px';
                 const btnInscrever = document.createElement('button');
                 btnInscrever.className = 'btn btn-pequeno btn-warning';
                 btnInscrever.textContent = '📝 Inscrever';

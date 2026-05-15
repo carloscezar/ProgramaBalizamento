@@ -175,29 +175,31 @@ window.EventoPage = {
             // Renderizar provas
             if (provasContainerModal) {
                 provasContainerModal.innerHTML = '';
-                provas.forEach((prova) => {
-                    ['Masculino', 'Feminino'].forEach((sexo) => {
-                        const chave = `${prova.id}-${sexo}`;
-                        const isChecked = provasSelecionadas.includes(chave);
+                provas
+                    .sort((a,b) => a.nome.localeCompare(b.nome))
+                    .forEach((prova) => {
+                        ['Masculino', 'Feminino'].forEach((sexo) => {
+                            const chave = `${prova.id}-${sexo}`;
+                            const isChecked = provasSelecionadas.includes(chave);
 
-                        const div = document.createElement('div');
-                        div.style.marginBottom = '0.2rem';
-                        div.innerHTML = `
-                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.2rem; border-radius: 4px; ${isChecked ? 'background-color: #e8f5e9' : 'background-color: #fff'}">
-                                <input
-                                    type="checkbox"
-                                    class="checkbox-prova-modal"
-                                    id="prova-modal-${chave}"
-                                    data-prova-id="${prova.id}"
-                                    data-sexo="${sexo}"
-                                    ${isChecked ? 'checked' : ''}
-                                />
-                                <span style="font-size: 0.8rem">${prova.nome} - ${sexo}</span>
-                            </label>
-                        `;
-                        provasContainerModal.appendChild(div);
+                            const div = document.createElement('div');
+                            div.style.marginBottom = '0.2rem';
+                            div.innerHTML = `
+                                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.2rem; border-radius: 4px; ${isChecked ? 'background-color: #e8f5e9' : 'background-color: #fff'}">
+                                    <input
+                                        type="checkbox"
+                                        class="checkbox-prova-modal"
+                                        id="prova-modal-${chave}"
+                                        data-prova-id="${prova.id}"
+                                        data-sexo="${sexo}"
+                                        ${isChecked ? 'checked' : ''}
+                                    />
+                                    <span style="font-size: 0.8rem">${prova.nome} - ${sexo}</span>
+                                </label>
+                            `;
+                            provasContainerModal.appendChild(div);
+                        });
                     });
-                });
             }
 
             // Renderizar categorias

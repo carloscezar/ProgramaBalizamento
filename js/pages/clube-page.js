@@ -67,17 +67,19 @@ window.ClubePageModule = {
             `;
 
             const tbody = tabela.querySelector('tbody');
-            clubes.forEach(clube => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${clube.nome}</td>
-                    <td>
-                        <button class="btn btn-pequeno btn-primary" onclick="editarClube('${clube.id}')">Editar</button>
-                        <button class="btn btn-pequeno btn-danger" onclick="removeClube('${clube.id}')">Remover</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+            clubes
+                .sort((a, b) => a.nome.localeCompare(b.nome))    
+                .forEach(clube => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${clube.nome}</td>
+                        <td>
+                            <button class="btn btn-pequeno btn-primary" onclick="editarClube('${clube.id}')">Editar</button>
+                            <button class="btn btn-pequeno btn-danger" onclick="removeClube('${clube.id}')">Remover</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
 
             listaClubsContainer.appendChild(tabela);
         }

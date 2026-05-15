@@ -15,9 +15,18 @@ window.AtletaPage = {
         const inscricaoEventoSelect = document.getElementById('inscricao-evento-select');
         const inscricaoProvasList = document.getElementById('inscricao-provas-list');
 
+        // Elementos de filtro
+        const filtroClubeSelect = document.getElementById('filtro-clube-atletas');
+        const filtroNomeInput = document.getElementById('filtro-nome-atleta');
+        const btnLimparFiltros = document.getElementById('btn-limpar-filtros-atletas');
+
         let atletaEmEdicao = null;
         let atletaSendoEditadoTempos = null;
         let atletaSendoInscrito = null;
+
+        // Variáveis de filtro
+        let filtroClubeSelecionado = '';
+        let filtroNomeSelecionado = '';
 
         if (!listaAtletasContainer) {
             return;
@@ -25,12 +34,38 @@ window.AtletaPage = {
 
         carregarClubes();
         carregarProvas();
+        carregarClubesFiltro();
         renderizarListaAtletas();
 
         // Event listeners
         btnNovoAtleta.addEventListener('click', abrirModalNovoAtleta);
         formAtletaModal.addEventListener('submit', salvarAtletaModal);
         formTempoModal.addEventListener('submit', salvarTempoModal);
+
+        // Event listeners dos filtros
+        if (filtroClubeSelect) {
+            filtroClubeSelect.addEventListener('change', (e) => {
+                filtroClubeSelecionado = e.target.value;
+                renderizarListaAtletas();
+            });
+        }
+
+        if (filtroNomeInput) {
+            filtroNomeInput.addEventListener('input', (e) => {
+                filtroNomeSelecionado = e.target.value.toLowerCase();
+                renderizarListaAtletas();
+            });
+        }
+
+        if (btnLimparFiltros) {
+            btnLimparFiltros.addEventListener('click', () => {
+                filtroClubeSelecionado = '';
+                filtroNomeSelecionado = '';
+                if (filtroClubeSelect) filtroClubeSelect.value = '';
+                if (filtroNomeInput) filtroNomeInput.value = '';
+                renderizarListaAtletas();
+            });
+        }
 
         // ===== FUNÇÕES DE CARREGAMENTO =====
         function carregarClubes() {
@@ -42,6 +77,19 @@ window.AtletaPage = {
                 option.textContent = clube.nome;
                 clubeSelectModal.appendChild(option);
             });
+        }
+
+        function carregarClubesFiltro() {
+            const clubes = getClubes();
+            if (filtroClubeSelect) {
+                filtroClubeSelect.innerHTML = '<option value="">-- Todos os Clubes --</option>';
+                clubes.forEach(clube => {
+                    const option = document.createElement('option');
+                    option.value = clube.id;
+                    option.textContent = clube.nome;
+                    filtroClubeSelect.appendChild(option);
+                });
+            }
         }
 
         function carregarProvas() {
@@ -58,13 +106,35 @@ window.AtletaPage = {
 
 
         // ===== FUNÇÕES DE RENDERIZAÇÃO =====
+        function aplicarFiltros(atletas) {
+            return atletas.filter(atleta => {
+                // Filtro por clube
+                if (filtroClubeSelecionado && atleta.clubeId !== filtroClubeSelecionado) {
+                    return false;
+                }
+
+                // Filtro por nome
+                if (filtroNomeSelecionado && !atleta.nome.toLowerCase().includes(filtroNomeSelecionado)) {
+                    return false;
+                }
+
+                return true;
+            });
+        }
+
         function renderizarListaAtletas() {
-            const atletas = getAtletas();
+            const todosAtletas = getAtletas();
+            const atletasFiltrados = aplicarFiltros(todosAtletas);
             const clubes = getClubes();
             listaAtletasContainer.innerHTML = '';
 
-            if (atletas.length === 0) {
+            if (todosAtletas.length === 0) {
                 listaAtletasContainer.innerHTML = '<p class="text-light">Nenhum atleta cadastrado.</p>';
+                return;
+            }
+
+            if (atletasFiltrados.length === 0) {
+                listaAtletasContainer.innerHTML = '<p class="text-light" style="color: #d9534f;">Nenhum atleta encontrado com os filtros aplicados.</p>';
                 return;
             }
 
@@ -77,30 +147,32 @@ window.AtletaPage = {
                         <th>Clube</th>
                         <th>Sexo</th>
                         <th>Nasc.</th>
-                        <th>Ações</th>
+                        <th style="min-width: 15rem;">Ações</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             `;
 
             const tbody = tabela.querySelector('tbody');
-            atletas.forEach(atleta => {
-                const clube = clubes.find(c => c.id === atleta.clubeId)?.nome || 'S/ clube';
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${atleta.nome}</td>
-                    <td>${clube}</td>
-                    <td>${atleta.sexo}</td>
-                    <td>${atleta.anoNascimento}</td>
-                    <td>
-                        <button class="btn btn-pequeno btn-primary" onclick="abrirModalEditarAtleta('${atleta.id}')">✏️ Editar</button>
-                        <button class="btn btn-pequeno btn-info" onclick="abrirModalTempos('${atleta.id}')">⏱️ Tempos</button>
-                        <button class="btn btn-pequeno btn-warning" onclick="inscreverEvento('${atleta.id}')">📝 Inscrever</button>
-                        <button class="btn btn-pequeno btn-danger" onclick="removerAtleta('${atleta.id}')">🗑️ Remover</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+            atletasFiltrados
+                .sort((a,b) => a.nome.localeCompare(b.nome))
+                .forEach(atleta => {
+                    const clube = clubes.find(c => c.id === atleta.clubeId)?.nome || 'S/ clube';
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${atleta.nome}</td>
+                        <td>${clube}</td>
+                        <td>${atleta.sexo}</td>
+                        <td>${atleta.anoNascimento}</td>
+                        <td>
+                            <button class="btn btn-pequeno btn-primary" onclick="abrirModalEditarAtleta('${atleta.id}')" title="Editar">✏️</button>
+                            <button class="btn btn-pequeno btn-info" onclick="abrirModalTempos('${atleta.id}')" title="Tempos">⏱️</button>
+                            <button class="btn btn-pequeno btn-warning" onclick="inscreverEvento('${atleta.id}')" title="Inscrever">📝</button>
+                            <button class="btn btn-pequeno btn-danger" onclick="removerAtleta('${atleta.id}')" title="Remover">🗑️</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
 
             listaAtletasContainer.appendChild(tabela);
         }

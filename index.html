@@ -76,7 +76,7 @@
           <span class="menu-toggle">▶</span> 🛠️ Administração
         </h3>
         <div id="administracao-menu" class="menu-items collapsed">
-          <a href="#/utilidades" class="menu-link">Utilidades</a>
+          <a href="#/admin" class="menu-link">Administração</a>
         </div>
       </nav>
     </aside>
@@ -211,7 +211,7 @@
       class="modal-overlay"
       style="display: none"
     >
-      <div class="modal-content" style="width: 600px">
+      <div class="modal-content" style="width: 700px">
         <div class="modal-header">
           <h3 id="modal-balizamento-titulo">Atletas da Prova</h3>
           <span class="modal-close" onclick="fecharModalAdiconarBalizamento()"
@@ -641,6 +641,66 @@
               </button>
             </div>
             <div class="card-body">
+              <!-- FILTROS -->
+              <div
+                class="filtro-container"
+                style="
+                  margin-bottom: 1.5rem;
+                  display: flex;
+                  gap: 1rem;
+                  align-items: flex-end;
+                  flex-wrap: wrap;
+                  background: #f0f0f0;
+                  padding: 1rem;
+                  border-radius: 4px;
+                "
+              >
+                <div style="flex: 1; min-width: 200px">
+                  <label
+                    for="filtro-clube-atletas"
+                    style="
+                      display: block;
+                      margin-bottom: 0.3rem;
+                      font-weight: 500;
+                      color: #005f73;
+                    "
+                    >Filtrar por Clube:</label
+                  >
+                  <select
+                    id="filtro-clube-atletas"
+                    class="form-control"
+                    style="width: 100%"
+                  >
+                    <option value="">-- Todos os Clubes --</option>
+                  </select>
+                </div>
+                <div style="flex: 1; min-width: 200px">
+                  <label
+                    for="filtro-nome-atleta"
+                    style="
+                      display: block;
+                      margin-bottom: 0.3rem;
+                      font-weight: 500;
+                      color: #005f73;
+                    "
+                    >Filtrar por Nome:</label
+                  >
+                  <input
+                    type="text"
+                    id="filtro-nome-atleta"
+                    class="form-control"
+                    placeholder="Digite o nome do atleta..."
+                  />
+                </div>
+                <button
+                  type="button"
+                  id="btn-limpar-filtros-atletas"
+                  class="btn btn-secondary"
+                  style="margin-bottom: 0"
+                >
+                  🔄 Limpar
+                </button>
+              </div>
               <div id="lista-atletas-container"></div>
             </div>
           </div>
@@ -1000,6 +1060,17 @@
           <div class="card">
             <div class="card-header">Provas do Evento</div>
             <div class="card-body">
+              <p
+                style="
+                  color: #666;
+                  font-size: 0.9rem;
+                  margin-bottom: 1rem;
+                  font-style: italic;
+                "
+              >
+                💡 Dica: Você pode arrastar as linhas para reordenar as provas,
+                ou usar os botões ↑ ↓
+              </p>
               <div id="lista-provas-evento-container"></div>
             </div>
           </div>
@@ -1041,13 +1112,7 @@
             <div class="form-group">
               <label class="form-label">Sexo:</label>
               <div style="margin-top: 0.5rem">
-                <label
-                  style="
-                    display: flex;
-                    align-items: center;
-                    margin-bottom: 0.5rem;
-                  "
-                >
+                <label style="align-items: center; margin-bottom: 0.5rem">
                   <input
                     type="radio"
                     name="sexo-evento"
@@ -1056,7 +1121,9 @@
                   />
                   Masculino
                 </label>
-                <label style="display: flex; align-items: center">
+              </div>
+              <div style="margin-top: 0.5rem">
+                <label style="align-items: center">
                   <input
                     type="radio"
                     name="sexo-evento"
@@ -1146,12 +1213,12 @@
       </section>
     </template>
 
-    <!-- UTILIDADES - BACKUP E RESTORE -->
-    <template id="utilidades">
+    <!-- ADMINISTRAÇÃO - BACKUP E RESTORE -->
+    <template id="admin">
       <section class="container">
         <div class="section">
           <h1 style="color: #005f73; margin-bottom: 1.5rem">
-            🛠️ Utilidades - Backup e Restore
+            🛠️ Administração - Backup e Restore
           </h1>
 
           <!-- Card de Ações -->
@@ -1219,6 +1286,36 @@
                     style="display: none"
                   />
                 </div>
+
+                <!-- Botão Zerar Banco de Dados -->
+                <div
+                  style="
+                    padding: 1.5rem;
+                    background: #f8d7da;
+                    border: 2px solid #dc3545;
+                    border-radius: 8px;
+                    text-align: center;
+                  "
+                >
+                  <div style="font-size: 2rem; margin-bottom: 0.5rem">⚠️</div>
+                  <h3 style="color: #721c24; margin: 0.5rem 0">
+                    Zerar Banco de Dados
+                  </h3>
+                  <p
+                    style="
+                      color: #721c24;
+                      font-size: 0.9rem;
+                      margin-bottom: 1rem;
+                      font-weight: 500;
+                    "
+                  >
+                    ⚠️ ATENÇÃO: Esta ação é irreversível! Todos os dados serão
+                    deletados.
+                  </p>
+                  <button id="btn-zerar-dados" class="btn btn-danger">
+                    🗑️ Zerar Tudo
+                  </button>
+                </div>
               </div>
 
               <div
@@ -1247,6 +1344,60 @@
       </section>
     </template>
 
+    <!-- MODAL: CONFIRMAÇÃO DE ZERAR DADOS -->
+    <div id="modal-zerar-dados" class="modal-overlay" style="display: none">
+      <div class="modal-content" style="width: 90%; max-width: 400px">
+        <div class="modal-header">
+          <h3 style="color: #dc3545">⚠️ Confirmar Exclusão de Dados</h3>
+          <span class="modal-close" onclick="fecharModalZerarDados()">×</span>
+        </div>
+        <div class="modal-body">
+          <div
+            style="
+              background: #f8d7da;
+              padding: 1rem;
+              border-radius: 4px;
+              margin-bottom: 1rem;
+              border-left: 4px solid #dc3545;
+            "
+          >
+            <p style="color: #721c24; margin: 0; font-weight: 500">
+              ⚠️ AVISO CRÍTICO
+            </p>
+            <p style="color: #721c24; margin: 0.5rem 0 0 0; font-size: 0.95rem">
+              Esta ação DELETARÁ PERMANENTEMENTE todos os dados do sistema:
+            </p>
+            <ul style="color: #721c24; margin: 0.5rem 0; padding-left: 1.5rem">
+              <li>Clubes</li>
+              <li>Atletas</li>
+              <li>Eventos e Provas</li>
+              <li>Inscrições e Balizamentos</li>
+              <li>Resultados</li>
+            </ul>
+            <p style="color: #721c24; margin: 0.5rem 0 0 0; font-size: 0.9rem">
+              Esta operação NÃO pode ser desfeita. Você tem certeza?
+            </p>
+          </div>
+          <div style="display: flex; gap: 1rem; justify-content: flex-end">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="fecharModalZerarDados()"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="confirmarZerarDados()"
+            >
+              🗑️ Sim, Zerar Tudo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===== SCRIPTS ===== -->
     <script src="js/database.js"></script>
     <script src="js/exceljs.min.js"></script>
@@ -1268,7 +1419,7 @@
     <script src="js/pages/balizamento-page.js"></script>
     <script src="js/pages/gerenciar-provas-evento-page.js?v=2"></script>
     <script src="js/pages/inscricao-page.js?v=9"></script>
-    <script src="js/pages/utilidades-page.js"></script>
+    <script src="js/pages/administracao-page.js"></script>
 
     <!-- APP INITIALIZATION -->
     <script src="js/app.js"></script>

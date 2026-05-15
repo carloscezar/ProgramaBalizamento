@@ -121,12 +121,12 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     router.register(
-        '/utilidades',
-        'Utilidades - Backup e Restore',
-        'utilidades',
+        '/admin',
+        'Adminstração - Backup e Restore',
+        'admin',
         () => {
-            if (window.UtilidasPage && window.UtilidasPage.init) {
-                window.UtilidasPage.init();
+            if (window.AdministracaoPage && window.AdministracaoPage.init) {
+                window.AdministracaoPage.init();
             }
         }
     );
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 html += `
                     <label style="display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.75rem; background-color: ${isInscrito ? '#e8f5e9' : '#f5f5f5'}; border-radius: 6px; cursor: pointer; border: 2px solid ${isInscrito ? '#66bb6a' : '#ddd'}; transition: all 0.2s;">
                         <input type="checkbox" name="prova-inscricao" value="${prova.id}" ${isInscrito ? 'checked' : ''} style="margin-top: 0.2rem; width: 18px; height: 18px;" />
-                        <span style="font-size: 0.9rem; line-height: 1.4;">${prova.provaNome}<br/><strong style="font-size: 0.85rem; color: #666;">${prova.categoriaNome}</strong></span>
+                        <span style="font-size: 0.9rem; line-height: 1.4;"><strong>#${prova.numeroProva}</strong> - ${prova.provaNome}</span>
                     </label>
                 `;
             });

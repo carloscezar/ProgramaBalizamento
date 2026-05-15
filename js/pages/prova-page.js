@@ -67,17 +67,19 @@ window.ProvaPage = {
             `;
 
             const tbody = tabela.querySelector('tbody');
-            provas.forEach(prova => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${prova.nome}</td>
-                    <td>
-                        <button class="btn btn-pequeno btn-primary" onclick="editarProva('${prova.id}')">Editar</button>
-                        <button class="btn btn-pequeno btn-danger" onclick="removeProva('${prova.id}')">Remover</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+            provas
+                .sort((a,b) => a.nome.localeCompare(b.nome))
+                .forEach(prova => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${prova.nome}</td>
+                        <td>
+                            <button class="btn btn-pequeno btn-primary" onclick="editarProva('${prova.id}')">Editar</button>
+                            <button class="btn btn-pequeno btn-danger" onclick="removeProva('${prova.id}')">Remover</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
 
             listaProvasContainer.appendChild(tabela);
         }

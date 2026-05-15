@@ -12,11 +12,8 @@ window.BalizamentoPage = {
         
 
         if (!eventoFilter || !balizamentoContainer) {
-                        return;
+            return;
         }
-
-        if (!btnImprimirBalizamento) {
-                    }
 
         let eventoSelecionado = null;
 
@@ -27,8 +24,7 @@ window.BalizamentoPage = {
         
         if (btnImprimirBalizamento) {
             btnImprimirBalizamento.addEventListener('click', handleImprimirBalizamento);
-                    } else {
-                    }
+        } 
 
         // ===== DEPOIS, CARREGAR EVENTOS =====
         carregarEventos();
@@ -49,7 +45,7 @@ window.BalizamentoPage = {
             // Auto-selecionar se houver apenas 1 evento não finalizado
             if (eventos.length === 1) {
                 eventoFilter.value = eventos[0].id;
-                                // IMPORTANTE: Disparar evento change para atualizar UI
+                // IMPORTANTE: Disparar evento change para atualizar UI
                 eventoFilter.dispatchEvent(new Event('change', { bubbles: true }));
             }
         }
@@ -60,11 +56,11 @@ window.BalizamentoPage = {
             const balizamentos = getBalizamentos(eventoSelecionado);
             const temBalizamento = eventoSelecionado && balizamentos.length > 0;
             
-                        // IMPORTANTE: Manter botão habilitado mesmo sem balizamento para permitir teste
+            // IMPORTANTE: Manter botão habilitado mesmo sem balizamento para permitir teste
             // btnImprimirBalizamento.disabled = !temBalizamento;
             if (btnImprimirBalizamento) {
                 btnImprimirBalizamento.disabled = false; // SEMPRE HABILITADO
-                            }
+            }
             
             renderizarBalizamento();
         }
@@ -311,15 +307,16 @@ window.BalizamentoPage = {
             
             // Montar conteúdo do modal
             document.getElementById('modal-balizamento-titulo').textContent = 
-                `Atletas: Prova ${detalhes.numeroProva} - ${detalhes.provaNome}`;
+                `Atletas: Prova ${detalhes.numeroProva} - ${detalhes.provaNome} • ${detalhes.categoriaNome} • ${detalhes.sexo}`;
             
             let html = `
                 <div style="margin-bottom: 1rem;">
-                    <h4 style="color: #005f73; margin-bottom: 0.5rem;">📋 ${detalhes.categoriaNome} • ${detalhes.sexo}</h4>
-                    <div style="background: #f0f0f0; padding: 0.8rem; border-radius: 4px; margin-bottom: 1rem;">
-                        <p style="margin: 0; color: #666; font-size: 0.9rem;">
-                            <strong>${balProva.length}</strong> no balizamento | <strong>${atletasElegiveis.length}</strong> elegível(is)
-                        </p>
+                    <!-- FILTRO DE CLUBE -->
+                    <div style="margin-bottom: 1rem;">
+                        <label for="filtro-clube-modal-baliz" style="display: block; color: #005f73; ">Filtrar por Clube:</label>
+                        <select id="filtro-clube-modal-baliz" class="form-control" style="font-size: 0.8rem; padding: 0.3rem 0.4rem;" onchange="window.BalizamentoPage.atualizarTabelaAtletas('${provaEventoId}')">
+                            <option value="">-- Todos os Clubes --</option>
+                        </select>
                     </div>
                 </div>
             `;
@@ -327,31 +324,84 @@ window.BalizamentoPage = {
             if (atletasElegiveis.length === 0) {
                 html += '<p style="color: #999; text-align: center; padding: 1rem;">Nenhum atleta elegível para esta prova.</p>';
             } else {
-                html += '<div style="max-height: 400px; overflow-y: auto;"><table class="table" style="font-size: 0.9rem;"><thead><tr><th>Atleta</th><th>Clube</th><th>Ação</th></tr></thead><tbody>';
-                
-                atletasElegiveis.forEach(atleta => {
-                    const clube = getClubes().find(c => c.id === atleta.clubeId);
-                    const noBaliz = atletasNoBaliz.has(atleta.id);
-                    
-                    html += `
-                        <tr style="background: ${noBaliz ? '#e8f5e9' : '#fff'};">
-                            <td><strong>${atleta.nome}</strong></td>
-                            <td>${clube?.nome || 'S/ clube'}</td>
-                            <td>
-                                ${noBaliz 
-                                    ? `<button class="btn btn-pequeno btn-danger" onclick="window.BalizamentoPage.removerDoBaliz('${provaEventoId}', '${atleta.id}')">✕ Remover</button>` 
-                                    : `<button class="btn btn-pequeno btn-success" onclick="window.BalizamentoPage.adicionarAoBaliz('${atleta.id}', '${provaEventoId}')">✓ Adicionar</button>`
-                                }
-                            </td>
-                        </tr>
-                    `;
-                });
-                
-                html += '</tbody></table></div>';
+                html += '<div style="max-height: 400px; overflow-y: auto;"><table class="table" style="font-size: 0.9rem;" id="tabela-atletas-baliz"><thead><tr><th>Atleta</th><th>Clube</th><th style="min-width: 7rem;">Ação</th></tr></thead><tbody id="tbody-atletas-baliz"></tbody></table></div>';
             }
             
             modalContent.innerHTML = html;
+            
+            // Popular select de clubes
+            const clubes = getClubes();
+            const filtroSelect = document.getElementById('filtro-clube-modal-baliz');
+            if (filtroSelect) {
+                clubes
+                    .sort((a,b) => a.nome.localeCompare(b.nome))
+                    .forEach(clube => {
+                        const option = document.createElement('option');
+                        option.value = clube.id;
+                        option.textContent = clube.nome;
+                        filtroSelect.appendChild(option);
+                    });
+            }
+            
+            // Renderizar tabela inicial
+            window.BalizamentoPage.atualizarTabelaAtletas(provaEventoId);
+            
             modal.style.display = 'flex';
+        };
+
+        window.BalizamentoPage.atualizarTabelaAtletas = function(provaEventoId) {
+            const provasEvento = getProvasEvento();
+            const provaEvento = provasEvento.find(pe => pe.id === provaEventoId);
+            if (!provaEvento) return;
+            
+            const balizamentos = getBalizamentos(eventoSelecionado);
+            const balProva = balizamentos.filter(b => b.provaEventoId === provaEventoId);
+            const atletasNoBaliz = new Set(balProva.map(b => b.atletaId));
+            
+            // Obter atletas elegíveis
+            const todosOsAtletas = getAtletas();
+            const atletasElegiveis = todosOsAtletas.filter(atleta => {
+                if (atleta.sexo !== provaEvento.sexo) return false;
+                const categoriaAtleta = atleta.categoriaId || getCategoriaAtleta(atleta.anoNascimento)?.id;
+                return categoriaAtleta === provaEvento.categoriaId;
+            }).sort((a, b) => a.nome.localeCompare(b.nome));
+            
+            // Aplicar filtro de clube
+            const filtroSelect = document.getElementById('filtro-clube-modal-baliz');
+            const clubeSelecionado = filtroSelect ? filtroSelect.value : '';
+            const atletasFiltrados = clubeSelecionado 
+                ? atletasElegiveis.filter(a => a.clubeId === clubeSelecionado)
+                : atletasElegiveis;
+            
+            // Renderizar tabela
+            const tbody = document.getElementById('tbody-atletas-baliz');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            atletasFiltrados.forEach(atleta => {
+                const clube = getClubes().find(c => c.id === atleta.clubeId);
+                const noBaliz = atletasNoBaliz.has(atleta.id);
+                
+                const tr = document.createElement('tr');
+                tr.style.background = noBaliz ? '#e8f5e9' : '#fff';
+                tr.innerHTML = `
+                    <td><strong>${atleta.nome}</strong></td>
+                    <td>${clube?.nome || 'S/ clube'}</td>
+                    <td>
+                        ${noBaliz 
+                            ? `<button class="btn btn-pequeno btn-danger" onclick="window.BalizamentoPage.removerDoBaliz('${provaEventoId}', '${atleta.id}')">✕ Remover</button>` 
+                            : `<button class="btn btn-pequeno btn-success" onclick="window.BalizamentoPage.adicionarAoBaliz('${atleta.id}', '${provaEventoId}')">✓ Adicionar</button>`
+                        }
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            if (atletasFiltrados.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="3" style="text-align: center; color: #999;">Nenhum atleta encontrado com o filtro selecionado.</td>';
+                tbody.appendChild(tr);
+            }
         };
         
         window.BalizamentoPage.adicionarAoBaliz = function(atletaId, provaEventoId) {

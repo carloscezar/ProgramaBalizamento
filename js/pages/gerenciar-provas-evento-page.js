@@ -53,12 +53,14 @@ window.GerenciarProvasEventoPage = {
             const todasAsProvas = getProvas();
 
             // Popular select de provas
-            todasAsProvas.forEach(prova => {
-                const option = document.createElement('option');
-                option.value = prova.id;
-                option.textContent = prova.nome;
-                provaSelect.appendChild(option);
-            });
+            todasAsProvas
+                .sort((a,b) => a.nome.localeCompare(b.nome))
+                .forEach(prova => {
+                    const option = document.createElement('option');
+                    option.value = prova.id;
+                    option.textContent = prova.nome;
+                    provaSelect.appendChild(option);
+                });
 
             // Popular select de categorias
             const categorias = getCategorias().filter(c => c.ativo !== false);
@@ -121,9 +123,11 @@ window.GerenciarProvasEventoPage = {
 
             const tabela = document.createElement('table');
             tabela.className = 'table';
+            tabela.id = 'tabela-provas-evento';
             tabela.innerHTML = `
                 <thead>
                     <tr>
+                        <th style="width: 50px; text-align: center;">Mover</th>
                         <th>Nº</th>
                         <th>Prova</th>
                         <th>Categoria</th>
@@ -137,12 +141,16 @@ window.GerenciarProvasEventoPage = {
             const tbody = tabela.querySelector('tbody');
             provasEvento.forEach((pe, index) => {
                 const tr = document.createElement('tr');
+                tr.className = 'draggable-row';
+                tr.draggable = true;
                 tr.dataset.id = pe.id;
+                tr.dataset.index = index;
                 
                 const isFirst = index === 0;
                 const isLast = index === provasEvento.length - 1;
                 
                 tr.innerHTML = `
+                    <td style="text-align: center; cursor: grab; padding: 0.5rem;"><span class="drag-handle">≡</span></td>
                     <td>${pe.numeroProva || '-'}</td>
                     <td>${pe.provaNome || 'Desconhecida'}</td>
                     <td>${pe.categoriaNome || 'Desconhecida'}</td>
@@ -154,9 +162,74 @@ window.GerenciarProvasEventoPage = {
                     </td>
                 `;
                 tbody.appendChild(tr);
+
+                // Event listeners para drag & drop
+                tr.addEventListener('dragstart', handleDragStart);
+                tr.addEventListener('dragover', handleDragOver);
+                tr.addEventListener('drop', handleDrop);
+                tr.addEventListener('dragleave', handleDragLeave);
+                tr.addEventListener('dragend', handleDragEnd);
             });
 
             listaProvasEventoContainer.appendChild(tabela);
+
+            // Variáveis para drag & drop
+            let draggedElement = null;
+
+            function handleDragStart(e) {
+                draggedElement = this;
+                this.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', this.innerHTML);
+            }
+
+            function handleDragOver(e) {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+                e.dataTransfer.dropEffect = 'move';
+                
+                if (this !== draggedElement) {
+                    this.classList.add('drag-over');
+                }
+                return false;
+            }
+
+            function handleDragLeave(e) {
+                this.classList.remove('drag-over');
+            }
+
+            function handleDrop(e) {
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                }
+
+                if (draggedElement !== this) {
+                    const draggedIndex = parseInt(draggedElement.dataset.index);
+                    const targetIndex = parseInt(this.dataset.index);
+
+                    // Trocar ordem
+                    const provas = getProvasEventoDetalhadas(eventoId);
+                    const ids = provas.map(p => p.id);
+
+                    const temp = ids[draggedIndex];
+                    ids[draggedIndex] = ids[targetIndex];
+                    ids[targetIndex] = temp;
+
+                    atualizarOrdemProvasEvento(eventoId, ids);
+                    renderizarProvasEvento();
+                }
+
+                return false;
+            }
+
+            function handleDragEnd(e) {
+                this.classList.remove('dragging');
+                
+                // Remover classe drag-over de todas as linhas
+                const rows = tbody.querySelectorAll('tr');
+                rows.forEach(row => row.classList.remove('drag-over'));
+            }
         }
 
         function exibirMensagem(texto, tipo = 'info') {

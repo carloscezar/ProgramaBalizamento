@@ -1,10 +1,11 @@
-// ===== MÓDULO DE PÁGINA - UTILIDADES (BACKUP E RESTORE) =====
+// ===== MÓDULO DE PÁGINA - ADMINISTRACAO (BACKUP E RESTORE) =====
 
-window.UtilidasPage = {
+window.AdministracaoPage = {
     init: function() {
 
         const btnExportar = document.getElementById('btn-exportar-dados');
         const btnImportar = document.getElementById('btn-importar-dados');
+        const btnZerar = document.getElementById('btn-zerar-dados');
         const inputArquivo = document.getElementById('input-arquivo-import');
         const containerEstatisticas = document.getElementById('container-estatisticas');
 
@@ -145,10 +146,65 @@ window.UtilidasPage = {
         btnExportar.addEventListener('click', exportarDados);
         btnImportar.addEventListener('click', () => inputArquivo.click());
         inputArquivo.addEventListener('change', importarDados);
+        if (btnZerar) {
+            btnZerar.addEventListener('click', () => {
+                const modal = document.getElementById('modal-zerar-dados');
+                if (modal) modal.style.display = 'flex';
+            });
+        }
 
         // Inicializar
         atualizarEstatisticas();
     }
+};
+
+// ===== FUNÇÕES GLOBAIS PARA MODAL ZERAR DADOS =====
+
+window.fecharModalZerarDados = function() {
+    const modal = document.getElementById('modal-zerar-dados');
+    if (modal) modal.style.display = 'none';
+};
+
+window.confirmarZerarDados = function() {
+    const confirmacaoFinal = confirm(
+        '⚠️ ÚLTIMA CONFIRMAÇÃO!\n\n' +
+        'Você tem ABSOLUTA certeza que deseja deletar todos os dados?\n\n' +
+        'Esta ação É IRREVERSÍVEL e não pode ser desfeita!'
+    );
+
+    if (!confirmacaoFinal) {
+        return;
+    }
+
+    // Zerar todos os dados
+    const todasAsTabelas = [
+        'clubes',
+        'categorias',
+        'atletas',
+        'provas',
+        'eventos',
+        'eventosProvas',
+        'eventosCategorias',
+        'provasEvento',
+        'inscricoes',
+        'balizamentos',
+        'melhoresTempos',
+        'resultadosProva',
+        'resultadosProvaAtleta'
+    ];
+
+    todasAsTabelas.forEach(tabela => {
+        localStorage.removeItem(tabela);
+    });
+
+    // Fechar modal
+    window.fecharModalZerarDados();
+
+    // Mostrar mensagem de sucesso
+    alert('✅ Banco de dados zerado com sucesso!\n\nA página será recarregada agora.');
+
+    // Recarregar página
+    window.location.reload();
 };
 
 
